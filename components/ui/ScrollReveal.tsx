@@ -10,6 +10,7 @@ interface ScrollRevealProps {
   duration?: number;
   threshold?: number;
   once?: boolean;
+  immediate?: boolean;
 }
 
 export default function ScrollReveal({
@@ -20,12 +21,21 @@ export default function ScrollReveal({
   duration = 600,
   threshold = 0.1,
   once = true,
+  immediate = false,
 }: ScrollRevealProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (immediate) {
+      requestAnimationFrame(() => {
+        setIsVisible(true);
+        setHasAnimated(true);
+      });
+      return;
+    }
+
     const element = ref.current;
     if (!element) return;
 
@@ -55,7 +65,7 @@ export default function ScrollReveal({
     }, 100);
 
     return () => clearTimeout(initTimer);
-  }, [threshold, once, hasAnimated]);
+  }, [threshold, once, hasAnimated, immediate]);
 
   const animationStyles: Record<string, { hidden: React.CSSProperties; visible: React.CSSProperties }> = {
     "fade-up": {

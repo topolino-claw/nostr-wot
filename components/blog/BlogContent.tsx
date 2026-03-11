@@ -2,7 +2,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
 import Image from 'next/image';
 import { Link } from '@/i18n/routing';
-import { CodeBlock } from '@/components/ui';
+import { CodeBlock, ScrollReveal } from '@/components/ui';
 import { WikiLink } from './WikiPreview';
 
 // Custom components for MDX
@@ -115,14 +115,81 @@ const components = {
   },
 };
 
+const mdxOptions = { mdxOptions: { remarkPlugins: [remarkGfm] } };
+
+/**
+ * Splits markdown content into sections at h2/h3 boundaries.
+ * Ignores headings inside fenced code blocks.
+ */
+function splitContentBySections(content: string): string[] {
+  const lines = content.split('\n');
+  const sections: string[] = [];
+  let currentSection: string[] = [];
+  let inCodeBlock = false;
+
+  for (const line of lines) {
+    // Track fenced code blocks (``` or ~~~, 3+ chars)
+    if (/^(`{3,}|~{3,})/.test(line)) {
+      inCodeBlock = !inCodeBlock;
+    }
+
+    // Split on h2/h3 headings outside code blocks
+    if (!inCodeBlock && /^#{2,3}\s/.test(line) && currentSection.length > 0) {
+      sections.push(currentSection.join('\n'));
+      currentSection = [line];
+    } else {
+      currentSection.push(line);
+    }
+  }
+
+  if (currentSection.length > 0) {
+    sections.push(currentSection.join('\n'));
+  }
+
+  return sections;
+}
+
 interface BlogContentProps {
   content: string;
 }
 
 export function BlogContent({ content }: BlogContentProps) {
+  const sections = splitContentBySections(content);
+
   return (
     <div className="prose-wrapper overflow-hidden text-lg leading-relaxed">
-      <MDXRemote source={content} components={components} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
+      {sections.map((section, index) => {
+        const trimmed = section.trim();
+        if (!trimmed) return null;
+
+        // First section: render immediately (no scroll reveal)
+        if (index === 0) {
+          return (
+            <div key={index}>
+              <MDXRemote source={trimmed} components={components} options={mdxOptions} />
+            </div>
+          );
+        }
+
+        // Subsequent sections: split heading from body for staggered reveal
+        const firstNewline = trimmed.indexOf('\n');
+        const hasBody = firstNewline !== -1;
+        const headingLine = hasBody ? trimmed.slice(0, firstNewline) : trimmed;
+        const bodyContent = hasBody ? trimmed.slice(firstNewline + 1).trim() : '';
+
+        return (
+          <div key={index}>
+            <ScrollReveal animation="fade-up">
+              <MDXRemote source={headingLine} components={components} options={mdxOptions} />
+            </ScrollReveal>
+            {bodyContent && (
+              <ScrollReveal animation="fade-up" delay={100}>
+                <MDXRemote source={bodyContent} components={components} options={mdxOptions} />
+              </ScrollReveal>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

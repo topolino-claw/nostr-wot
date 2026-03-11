@@ -153,7 +153,7 @@ export default async function GuidePostPage({ params }: Props) {
           {/* Hero */}
           <header className="relative pt-24 pb-16">
             <div className="max-w-4xl mx-auto px-6">
-              <ScrollReveal animation="fade-up">
+              <ScrollReveal animation="fade-up" immediate>
                 <LinkButton
                   href="/guides"
                   variant="secondary"
@@ -164,7 +164,7 @@ export default async function GuidePostPage({ params }: Props) {
                 </LinkButton>
               </ScrollReveal>
 
-              <ScrollReveal animation="fade-up" delay={100}>
+              <ScrollReveal animation="fade-up" delay={100} immediate>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {guide.difficulty && (
                     <span className={`px-3 py-1 text-sm font-medium rounded-full ${
@@ -188,19 +188,19 @@ export default async function GuidePostPage({ params }: Props) {
                 </div>
               </ScrollReveal>
 
-              <ScrollReveal animation="fade-up" delay={150}>
+              <ScrollReveal animation="fade-up" delay={150} immediate>
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
                   {guide.title}
                 </h1>
               </ScrollReveal>
 
-              <ScrollReveal animation="fade-up" delay={200}>
+              <ScrollReveal animation="fade-up" delay={200} immediate>
                 <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
                   {guide.excerpt}
                 </p>
               </ScrollReveal>
 
-              <ScrollReveal animation="fade-up" delay={250}>
+              <ScrollReveal animation="fade-up" delay={250} immediate>
                 <div className="flex items-center gap-4 pb-8 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
                     <time dateTime={guide.date}>{formatDate(guide.date, locale)}</time>
@@ -213,7 +213,7 @@ export default async function GuidePostPage({ params }: Props) {
           </header>
 
           {/* Featured Image */}
-          <ScrollReveal animation="fade-up" delay={300}>
+          <ScrollReveal animation="fade-up" delay={300} immediate>
             <div className="max-w-5xl mx-auto px-6 mb-12">
               <div className="relative aspect-[2/1] rounded-2xl overflow-hidden">
                 <Image
@@ -233,9 +233,7 @@ export default async function GuidePostPage({ params }: Props) {
             <div className="lg:flex lg:gap-12">
               {/* Main Content */}
               <article className="flex-1 min-w-0 max-w-prose">
-                <ScrollReveal animation="fade-up" delay={350}>
-                  <BlogContent content={guide.content} />
-                </ScrollReveal>
+                <BlogContent content={guide.content} />
               </article>
 
               {/* Sidebar */}
