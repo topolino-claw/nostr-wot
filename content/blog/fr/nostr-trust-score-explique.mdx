@@ -1,0 +1,205 @@
+---
+title: "Le Trust Score Nostr explique : comment la confiance est calculee"
+description: "Decouvrez comment Nostr Web of Trust calcule les scores de confiance en utilisant la distance sociale, les follows mutuels, les noeuds de pont et la diversite des chemins."
+excerpt: "Les scores de confiance vont au-dela d'une simple verification de follow. Decouvrez exactement comment le Web of Trust calcule un score de 0 a 1 pour chaque cle publique Nostr, en se basant sur la distance, les follows mutuels, le nombre de chemins et les bonus de pont."
+date: "2026-03-12"
+author:
+  name: "Leon Acosta"
+  avatar: "/authors/leon-profile.jpg"
+  npub: "npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk"
+  socials:
+    linkedin: "leonacosta"
+    instagram: "leonacosta.now"
+    twitter: "leonacosta_"
+    github: "leonacostaok"
+featuredImage: "/images/blog/trust-score/featured.svg"
+previewImage: "/images/blog/trust-score/preview.svg"
+tags:
+  - "Éducation"
+  - "Trust Score"
+  - "Nostr"
+  - "Web of Trust"
+published: true
+seoTitle: "Le Trust Score Nostr explique : comment la confiance est calculee"
+seoDescription: "Plongee approfondie dans le calcul des scores de confiance par Nostr Web of Trust. Comprenez la decroissance par distance, les follows mutuels, les bonus de pont et la diversite des chemins."
+ogImage: "/images/blog/trust-score/og.svg"
+translationKey: "nostr-trust-score-explained"
+---
+
+Lorsque vous utilisez l'extension Nostr Web of Trust, chaque cle publique recoit un **score de confiance** entre 0 et 1. Mais que signifie reellement ce nombre ? Et comment est-il calcule ?
+
+Dans cet article, nous allons detailler le systeme de scoring, expliquer chaque facteur et vous montrer comment utiliser les scores de confiance dans vos propres applications.
+
+## Qu'est-ce qu'un score de confiance ?
+
+Un score de confiance est une **valeur numerique de 0 a 1** qui represente a quel point quelqu'un est connecte a vous a travers votre graphe social. C'est plus nuance qu'une simple verification "follow / pas follow".
+
+| Plage de score | Signification | Distance typique |
+|------------|---------|-----------------|
+| **0.80 – 1.00** | Tres fiable | Follow direct (1 saut) |
+| **0.40 – 0.60** | Confiance moderee | Ami d'ami (2 sauts) |
+| **0.15 – 0.30** | Faible confiance | A 3 sauts |
+| **0.00** | Inconnu / non fiable | Hors de votre reseau |
+
+Le score ne depend pas uniquement de la distance. Plusieurs facteurs contribuent au nombre final.
+
+## Comment les scores de confiance sont calcules
+
+La formule de scoring comporte quatre composantes :
+
+```
+score = base(distance) + mutual_bonus + bridging_bonus + path_bonus
+```
+
+Passons en revue chacune d'entre elles.
+
+### 1. Score de base (decroissance par distance)
+
+Le fondement de chaque score de confiance est la **distance sociale** — le nombre de sauts qui vous separent de la cle publique cible dans le graphe de follows.
+
+```javascript
+// Decroissance simplifiee par distance
+function baseScore(hops) {
+  if (hops === 0) return 1.0;   // yourself
+  if (hops === 1) return 0.80;  // direct follow
+  if (hops === 2) return 0.45;  // friend of friend
+  if (hops === 3) return 0.15;  // 3 hops away
+  return 0.0;                   // too far
+}
+```
+
+La decroissance est intentionnellement abrupte. Chaque saut supplementaire reduit significativement le score de base, car la confiance diminue rapidement a travers les connexions indirectes.
+
+<Callout type="tip">
+Vous pouvez personnaliser le nombre maximal de sauts et les valeurs de decroissance dans les parametres de l'extension. Certains utilisateurs preferent un reseau strict a 2 sauts, tandis que d'autres etendent a 3 sauts.
+</Callout>
+
+### 2. Bonus de follow mutuel
+
+Lorsque deux comptes **se suivent mutuellement** (un follow mutuel), la connexion est plus forte qu'un follow a sens unique. Le systeme de scoring recompense cela :
+
+- Un follow mutuel au saut 1 ajoute jusqu'a **+0.10** au score de base
+- Les follows mutuels le long du chemin contribuent egalement un bonus plus faible
+
+Cela reflete une intuition du monde reel : si quelqu'un vous suit en retour, la relation a plus de chances d'etre authentique.
+
+### 3. Bonus de pont
+
+Un **noeud de pont** est quelqu'un qui connecte des parties autrement separees de votre graphe social. Si plusieurs chemins independants vers une cle publique passent par le meme noeud intermediaire, ce noeud est un "pont".
+
+Les noeuds de pont recoivent un petit bonus car ils servent d'ancres de confiance reliant differentes communautes. Si vous atteignez quelqu'un via un pont bien connecte, c'est un signal plus fort que de l'atteindre par une seule chaine.
+
+### 4. Bonus de diversite de chemins
+
+Plus il y a de **chemins independants** qui menent de vous a une cle publique, plus le score de confiance est eleve. C'est le bonus de diversite de chemins.
+
+```javascript
+// More paths = higher confidence
+const pathBonus = Math.min(pathCount * 0.03, 0.15);
+```
+
+Pensez-y de cette facon : si 5 personnes differentes que vous suivez suivent egalement quelqu'un, c'est un signal de confiance beaucoup plus fort que si une seule personne vous connecte.
+
+## Score de confiance vs. verification binaire de follow
+
+Vous pourriez vous demander : pourquoi ne pas simplement verifier "cette personne est-elle dans mon reseau, oui ou non ?" Voici la difference :
+
+| Caracteristique | Verification binaire | Score de confiance |
+|---------|-------------|-------------|
+| **Sortie** | `true` / `false` | `0.00` – `1.00` |
+| **Granularite** | Aucune | Fine |
+| **Cas d'usage** | Filtre anti-spam simple | Classement de contenu, badges UI |
+| **Follows mutuels** | Ignores | Comptabilises |
+| **Diversite des chemins** | Ignoree | Recompensee |
+
+Les verifications binaires restent utiles pour un filtrage rapide du spam. Mais les scores de confiance vous permettent de creer des experiences plus riches — comme afficher un degrade de couleurs de confiance, classer les resultats de recherche ou definir differents niveaux de permission.
+
+## Exemples pratiques
+
+### Obtenir un score de confiance
+
+```javascript
+// Simple trust score check
+const score = await window.nostr.wot.getTrustScore(pubkey);
+
+if (score >= 0.7) {
+  // Highly trusted - show full content
+} else if (score >= 0.3) {
+  // Moderate trust - show with indicator
+} else {
+  // Low/no trust - collapse or flag
+}
+```
+
+### Obtenir les details de confiance
+
+```javascript
+// Full trust details with all scoring factors
+const details = await window.nostr.wot.getDetails(pubkey);
+
+console.log(details);
+// {
+//   distance: 2,
+//   score: 0.52,
+//   paths: 3,
+//   mutual: true,
+//   bridgingNodes: ["pubkey1...", "pubkey2..."]
+// }
+```
+
+### Scoring par lot pour les fils d'actualite
+
+```javascript
+// Score multiple pubkeys at once (efficient)
+const pubkeys = events.map(e => e.pubkey);
+const scores = {};
+
+for (const pk of pubkeys) {
+  scores[pk] = await window.nostr.wot.getTrustScore(pk);
+}
+
+// Sort feed by trust score
+const rankedEvents = events.sort(
+  (a, b) => (scores[b.pubkey] || 0) - (scores[a.pubkey] || 0)
+);
+```
+
+## Comment les applications peuvent utiliser les scores de confiance
+
+Les scores de confiance ouvrent des possibilites que les verifications binaires ne permettent pas :
+
+- **Classement du fil d'actualite** : Triez les publications par score de confiance de l'auteur pour que le contenu fiable apparaisse en premier
+- **Badges de confiance** : Affichez des indicateurs vert/jaune/rouge a cote des noms de profil
+- **Seuils de zap** : Approuvez automatiquement les petits zaps vers les utilisateurs hautement fiables
+- **Filtrage des reponses** : Reduisez les reponses a faible confiance tout en gardant celles des contacts fiables visibles
+- **Filtrage des DMs** : Separez les messages des contacts de confiance des expediteurs inconnus
+- **Niveaux de permission** : Accordez differentes capacites en fonction du niveau de confiance
+
+<Callout type="info">
+Tous ces modeles fonctionnent via l'API `window.nostr.wot`, disponible dans toute application web Nostr lorsque l'extension est installee.
+</Callout>
+
+## Ajuster vos scores de confiance
+
+L'extension vous permet de personnaliser les parametres de scoring dans les Reglages :
+
+- **Sauts maximum** : Jusqu'ou chercher (2 ou 3 sauts)
+- **Taux de decroissance** : A quelle vitesse la confiance diminue par saut
+- **Poids du bonus mutuel** : A quel point recompenser les follows mutuels
+- **Mode WoT** : Distant (oracle), Local (navigateur uniquement) ou Hybride
+
+Differents parametres conviennent a differents cas d'usage. Une application de marketplace pourrait vouloir une confiance stricte a 2 sauts, tandis qu'un fil d'actualite social pourrait beneficier d'un reseau plus large a 3 sauts avec une decroissance plus douce.
+
+## Essayez par vous-meme
+
+La meilleure facon de comprendre les scores de confiance est d'experimenter :
+
+1. **[Telechargez l'extension](/download)** et configurez votre compte
+2. **[Ouvrez le Playground](/playground)** et interrogez les scores de confiance pour differentes cles publiques
+3. **Essayez l'API** dans la console de votre navigateur : `await window.nostr.wot.getTrustScore("pubkey...")`
+
+Observez comment les scores changent lorsque vous ajustez les parametres et explorez differentes parties du graphe Nostr.
+
+---
+
+*Des questions sur le scoring de confiance ? Retrouvez-nous sur [Nostr](https://njump.me/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk) ou consultez la [documentation de l'API](/docs/extension).*

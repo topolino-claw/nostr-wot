@@ -1,0 +1,205 @@
+---
+title: "Nostr Trust Score erklaert: So wird Vertrauen berechnet"
+description: "Erfahren Sie, wie Nostr Web of Trust Vertrauenswerte anhand von sozialer Distanz, gegenseitigen Follows, Brueckenknoten und Pfadvielfalt berechnet."
+excerpt: "Trust Scores gehen ueber einfache Follow-Pruefungen hinaus. Erfahren Sie genau, wie das Web of Trust einen Wert von 0 bis 1 fuer jeden Nostr-Pubkey berechnet -- basierend auf Distanz, gegenseitigen Follows, Pfadanzahl und Bruecken-Boni."
+date: "2026-03-12"
+author:
+  name: "Leon Acosta"
+  avatar: "/authors/leon-profile.jpg"
+  npub: "npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk"
+  socials:
+    linkedin: "leonacosta"
+    instagram: "leonacosta.now"
+    twitter: "leonacosta_"
+    github: "leonacostaok"
+featuredImage: "/images/blog/trust-score/featured.svg"
+previewImage: "/images/blog/trust-score/preview.svg"
+tags:
+  - "Bildung"
+  - "Trust Score"
+  - "Nostr"
+  - "Web of Trust"
+published: true
+seoTitle: "Nostr Trust Score erklaert: So wird Vertrauen berechnet"
+seoDescription: "Ein tiefer Einblick in die Berechnung von Trust Scores im Nostr Web of Trust. Verstehen Sie Distanzabnahme, gegenseitige Follows, Bruecken-Boni und Pfadvielfalt-Bewertung."
+ogImage: "/images/blog/trust-score/og.svg"
+translationKey: "nostr-trust-score-explained"
+---
+
+Wenn Sie die Nostr Web of Trust Erweiterung verwenden, erhaelt jeder Pubkey einen **Trust Score** zwischen 0 und 1. Aber was bedeutet diese Zahl eigentlich? Und wie wird sie berechnet?
+
+In diesem Beitrag schluesseln wir das Bewertungssystem auf, erklaeren jeden Faktor und zeigen Ihnen, wie Sie Trust Scores in Ihren eigenen Apps nutzen koennen.
+
+## Was ist ein Trust Score?
+
+Ein Trust Score ist ein **numerischer Wert von 0 bis 1**, der darstellt, wie eng jemand ueber Ihren sozialen Graphen mit Ihnen verbunden ist. Er ist deutlich differenzierter als eine einfache "Folge ich / Folge ich nicht"-Pruefung.
+
+| Wertebereich | Bedeutung | Typische Distanz |
+|------------|---------|-----------------|
+| **0,80 -- 1,00** | Hohes Vertrauen | Direkter Follow (Hop 1) |
+| **0,40 -- 0,60** | Mittleres Vertrauen | Freund eines Freundes (Hop 2) |
+| **0,15 -- 0,30** | Geringes Vertrauen | 3 Hops entfernt |
+| **0,00** | Unbekannt / nicht vertrauenswuerdig | Nicht in Ihrem Netzwerk |
+
+Der Score haengt nicht nur von der Distanz ab. Mehrere Faktoren fliessen in die endgueltige Zahl ein.
+
+## Wie Trust Scores berechnet werden
+
+Die Bewertungsformel hat vier Komponenten:
+
+```
+score = base(distance) + mutual_bonus + bridging_bonus + path_bonus
+```
+
+Gehen wir jede einzelne durch.
+
+### 1. Basiswert (Distanzabnahme)
+
+Die Grundlage jedes Trust Scores ist die **soziale Distanz** -- wie viele Hops Sie im Follow-Graphen vom Ziel-Pubkey trennen.
+
+```javascript
+// Vereinfachte Distanzabnahme
+function baseScore(hops) {
+  if (hops === 0) return 1.0;   // Sie selbst
+  if (hops === 1) return 0.80;  // Direkter Follow
+  if (hops === 2) return 0.45;  // Freund eines Freundes
+  if (hops === 3) return 0.15;  // 3 Hops entfernt
+  return 0.0;                   // Zu weit entfernt
+}
+```
+
+Die Abnahme ist bewusst steil. Jeder zusaetzliche Hop reduziert den Basiswert erheblich, da Vertrauen ueber indirekte Verbindungen schnell abnimmt.
+
+<Callout type="tip">
+Sie koennen die maximale Hop-Anzahl und die Abnahmewerte in den Erweiterungseinstellungen anpassen. Manche Nutzer bevorzugen ein engeres 2-Hop-Netzwerk, waehrend andere auf 3 Hops erweitern.
+</Callout>
+
+### 2. Gegenseitiger-Follow-Bonus
+
+Wenn sich zwei Accounts **gegenseitig folgen** (ein Mutual Follow), ist die Verbindung staerker als ein einseitiger Follow. Das Bewertungssystem belohnt dies:
+
+- Ein gegenseitiger Follow bei Hop 1 fuegt bis zu **+0,10** zum Basiswert hinzu
+- Gegenseitige Follows entlang des Pfades tragen ebenfalls einen kleineren Bonus bei
+
+Dies spiegelt eine reale Intuition wider: Wenn Ihnen jemand zurueckfolgt, ist die Beziehung wahrscheinlich authentischer.
+
+### 3. Bruecken-Bonus
+
+Ein **Brueckenknoten** ist jemand, der ansonsten getrennte Teile Ihres sozialen Graphen verbindet. Wenn mehrere unabhaengige Pfade zu einem Pubkey durch denselben Zwischenknoten fuehren, ist dieser Knoten eine "Bruecke".
+
+Brueckenknoten erhalten einen kleinen Bonus, weil sie als Vertrauensanker dienen, die verschiedene Gemeinschaften verbinden. Wenn Sie jemanden ueber eine gut vernetzte Bruecke erreichen, ist das ein staerkeres Signal als ueber eine einzelne Kette.
+
+### 4. Pfadvielfalt-Bonus
+
+Je mehr **unabhaengige Pfade** von Ihnen zu einem Pubkey fuehren, desto hoeher ist der Trust Score. Das ist der Pfadvielfalt-Bonus.
+
+```javascript
+// Mehr Pfade = hoeheres Vertrauen
+const pathBonus = Math.min(pathCount * 0.03, 0.15);
+```
+
+Stellen Sie es sich so vor: Wenn 5 verschiedene Personen, denen Sie folgen, ebenfalls jemandem folgen, ist das ein viel staerkeres Vertrauenssignal, als wenn nur 1 Person Sie verbindet.
+
+## Trust Score vs. binaere Follow-Pruefung
+
+Sie fragen sich vielleicht: Warum nicht einfach pruefen "Ist diese Person in meinem Netzwerk, ja oder nein?" Hier ist der Unterschied:
+
+| Merkmal | Binaere Pruefung | Trust Score |
+|---------|-------------|-------------|
+| **Ausgabe** | `true` / `false` | `0,00` -- `1,00` |
+| **Granularitaet** | Keine | Feinabgestuft |
+| **Anwendungsfall** | Einfacher Spam-Filter | Content-Ranking, UI-Badges |
+| **Gegenseitige Follows** | Ignoriert | Beruecksichtigt |
+| **Pfadvielfalt** | Ignoriert | Belohnt |
+
+Binaere Pruefungen sind weiterhin nuetzlich fuer schnelle Spam-Filterung. Aber Trust Scores ermoeglichen reichhaltigere Erfahrungen -- wie die Anzeige eines Vertrauensgradienten, das Ranking von Suchergebnissen oder die Festlegung unterschiedlicher Berechtigungsstufen.
+
+## Praktische Beispiele
+
+### Einen Trust Score abrufen
+
+```javascript
+// Einfache Trust-Score-Abfrage
+const score = await window.nostr.wot.getTrustScore(pubkey);
+
+if (score >= 0.7) {
+  // Hohes Vertrauen - vollstaendigen Inhalt anzeigen
+} else if (score >= 0.3) {
+  // Mittleres Vertrauen - mit Indikator anzeigen
+} else {
+  // Geringes/kein Vertrauen - einklappen oder markieren
+}
+```
+
+### Detaillierte Vertrauensinformationen abrufen
+
+```javascript
+// Vollstaendige Vertrauensdetails mit allen Bewertungsfaktoren
+const details = await window.nostr.wot.getDetails(pubkey);
+
+console.log(details);
+// {
+//   distance: 2,
+//   score: 0.52,
+//   paths: 3,
+//   mutual: true,
+//   bridgingNodes: ["pubkey1...", "pubkey2..."]
+// }
+```
+
+### Batch-Bewertung fuer Feeds
+
+```javascript
+// Mehrere Pubkeys auf einmal bewerten (effizient)
+const pubkeys = events.map(e => e.pubkey);
+const scores = {};
+
+for (const pk of pubkeys) {
+  scores[pk] = await window.nostr.wot.getTrustScore(pk);
+}
+
+// Feed nach Trust Score sortieren
+const rankedEvents = events.sort(
+  (a, b) => (scores[b.pubkey] || 0) - (scores[a.pubkey] || 0)
+);
+```
+
+## Wie Apps Trust Scores nutzen koennen
+
+Trust Scores eroeffnen Moeglichkeiten, die binaere Pruefungen nicht bieten:
+
+- **Feed-Ranking**: Beitraege nach dem Trust Score des Autors sortieren, damit vertrauenswuerdige Inhalte zuerst erscheinen
+- **Vertrauens-Badges**: Gruen/Gelb/Rot-Indikatoren neben Profilnamen anzeigen
+- **Zap-Schwellenwerte**: Kleine Zaps an hoch vertrauenswuerdige Nutzer automatisch genehmigen
+- **Antwort-Filterung**: Antworten mit geringem Vertrauen einklappen, waehrend vertrauenswuerdige sichtbar bleiben
+- **DM-Filterung**: Nachrichten von vertrauenswuerdigen Kontakten von unbekannten Absendern trennen
+- **Berechtigungsstufen**: Unterschiedliche Funktionen basierend auf der Vertrauensstufe gewaehren
+
+<Callout type="info">
+Alle diese Muster funktionieren ueber die `window.nostr.wot`-API, die in jeder Nostr-Web-App verfuegbar ist, wenn die Erweiterung installiert ist.
+</Callout>
+
+## Ihre Trust Scores anpassen
+
+Die Erweiterung ermoeglicht es Ihnen, die Bewertungsparameter in den Einstellungen anzupassen:
+
+- **Maximale Hops**: Wie weit gesucht wird (2 oder 3 Hops)
+- **Abnahmerate**: Wie steil das Vertrauen pro Hop sinkt
+- **Gewichtung gegenseitiger Follows**: Wie stark gegenseitige Follows belohnt werden
+- **WoT-Modus**: Remote (Oracle), Lokal (nur im Browser) oder Hybrid
+
+Unterschiedliche Einstellungen eignen sich fuer unterschiedliche Anwendungsfaelle. Eine Marktplatz-App benoetigt moeglicherweise strenges 2-Hop-Vertrauen, waehrend ein sozialer Feed von einem breiteren 3-Hop-Netzwerk mit sanfterer Abnahme profitieren kann.
+
+## Probieren Sie es selbst aus
+
+Der beste Weg, Trust Scores zu verstehen, ist zu experimentieren:
+
+1. **[Laden Sie die Erweiterung herunter](/download)** und richten Sie Ihr Konto ein
+2. **[Oeffnen Sie den Playground](/playground)** und fragen Sie Trust Scores fuer verschiedene Pubkeys ab
+3. **Testen Sie die API** in Ihrer Browser-Konsole: `await window.nostr.wot.getTrustScore("pubkey...")`
+
+Beobachten Sie, wie sich die Scores aendern, wenn Sie Einstellungen anpassen und verschiedene Teile des Nostr-Graphen erkunden.
+
+---
+
+*Fragen zur Vertrauensbewertung? Finden Sie uns auf [Nostr](https://njump.me/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk) oder lesen Sie die [API-Dokumentation](/docs/extension).*
