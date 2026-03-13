@@ -5,146 +5,225 @@
       <stop offset="50%" style="stop-color:#312e81;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#4c1d95;stop-opacity:1" />
     </linearGradient>
-    <radialGradient id="win-glow" cx="50%" cy="45%" r="45%">
-      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:0.3" />
+    <radialGradient id="win-center-glow" cx="50%" cy="42%" r="38%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:0.28" />
       <stop offset="100%" style="stop-color:#1e1b4b;stop-opacity:0" />
     </radialGradient>
-    <filter id="win-shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#a78bfa" flood-opacity="0.5"/>
-    </filter>
     <filter id="win-user-glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feDropShadow dx="0" dy="0" stdDeviation="12" flood-color="#a78bfa" flood-opacity="0.7"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="14" flood-color="#a78bfa" flood-opacity="0.75"/>
+    </filter>
+    <filter id="win-key-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#fde047" flood-opacity="0.7"/>
+    </filter>
+    <filter id="win-note-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#a78bfa" flood-opacity="0.5"/>
     </filter>
     <filter id="win-relay-glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#4ade80" flood-opacity="0.5"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="#4ade80" flood-opacity="0.55"/>
     </filter>
-    <filter id="win-node-glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#4ade80" flood-opacity="0.5"/>
+    <filter id="win-app-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#60a5fa" flood-opacity="0.5"/>
+    </filter>
+    <filter id="win-lock-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#f87171" flood-opacity="0.5"/>
     </filter>
   </defs>
 
   <!-- Background -->
-  <rect width="100%" height="100%" fill="url(#win-bg)"/>
-  <rect width="100%" height="100%" fill="url(#win-glow)"/>
+  <rect width="1200" height="630" fill="url(#win-bg)"/>
+  <rect width="1200" height="630" fill="url(#win-center-glow)"/>
 
   <!-- Subtle grid -->
-  <g opacity="0.05" stroke="white" stroke-width="0.5">
+  <g opacity="0.04" stroke="white" stroke-width="0.5">
     <line x1="0" y1="0" x2="1200" y2="630"/>
-    <line x1="200" y1="0" x2="1200" y2="500"/>
-    <line x1="0" y1="200" x2="1000" y2="630"/>
-    <line x1="400" y1="0" x2="1200" y2="400"/>
-    <line x1="0" y1="400" x2="800" y2="630"/>
     <line x1="1200" y1="0" x2="0" y2="630"/>
-    <line x1="1000" y1="0" x2="0" y2="500"/>
-    <line x1="1200" y1="200" x2="200" y2="630"/>
+    <line x1="0" y1="315" x2="1200" y2="315"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
   </g>
 
-  <!-- Trust rings around center -->
-  <circle cx="600" cy="290" r="270" fill="none" stroke="rgba(167,139,250,0.06)" stroke-width="1" stroke-dasharray="4,8"/>
-  <circle cx="600" cy="290" r="210" fill="none" stroke="rgba(167,139,250,0.10)" stroke-width="1" stroke-dasharray="4,8"/>
-  <circle cx="600" cy="290" r="150" fill="none" stroke="rgba(167,139,250,0.14)" stroke-width="1" stroke-dasharray="4,8"/>
-
-  <!-- Outer network nodes -->
-  <g filter="url(#win-node-glow)">
-    <circle cx="180" cy="160" r="2.5" fill="rgba(248,113,113,0.5)"/>
-    <circle cx="1020" cy="180" r="2.5" fill="rgba(248,113,113,0.5)"/>
-    <circle cx="160" cy="490" r="2.5" fill="rgba(248,113,113,0.4)"/>
-    <circle cx="1040" cy="470" r="2.5" fill="rgba(248,113,113,0.4)"/>
-    <circle cx="450" cy="70" r="3" fill="rgba(250,204,21,0.6)"/>
-    <circle cx="760" cy="65" r="3" fill="rgba(250,204,21,0.6)"/>
-    <circle cx="440" cy="560" r="3" fill="rgba(250,204,21,0.5)"/>
-    <circle cx="770" cy="560" r="3" fill="rgba(250,204,21,0.5)"/>
-  </g>
-
-  <!-- Central user node -->
+  <!-- ── STEP 1: YOU (left) ── -->
+  <!-- Person node -->
   <g filter="url(#win-user-glow)">
-    <!-- Person icon: head + body -->
-    <circle cx="600" cy="260" r="22" fill="rgba(167,139,250,0.25)" stroke="rgba(167,139,250,0.85)" stroke-width="2.5"/>
+    <circle cx="200" cy="260" r="36" fill="rgba(30,27,75,0.95)" stroke="rgba(167,139,250,0.8)" stroke-width="2.5"/>
     <!-- Head -->
-    <circle cx="600" cy="252" r="9" fill="none" stroke="rgba(167,139,250,0.85)" stroke-width="2"/>
-    <!-- Shoulders/body arc -->
-    <path d="M583,272 C583,264 590,260 600,260 C610,260 617,264 617,272" fill="none" stroke="rgba(167,139,250,0.85)" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="200" cy="248" r="11" fill="rgba(167,139,250,0.7)"/>
+    <!-- Shoulders -->
+    <path d="M179,272 Q179,262 200,262 Q221,262 221,272" fill="rgba(167,139,250,0.5)"/>
   </g>
 
-  <!-- Broadcast signal rings from user -->
-  <circle cx="600" cy="260" r="45" fill="none" stroke="rgba(167,139,250,0.2)" stroke-width="1" stroke-dasharray="3,5"/>
-  <circle cx="600" cy="260" r="65" fill="none" stroke="rgba(167,139,250,0.12)" stroke-width="1" stroke-dasharray="3,5"/>
+  <!-- "You" label -->
+  <text x="200" y="314" font-family="'Inter', sans-serif" font-size="13" font-weight="700" fill="rgba(167,139,250,0.85)" text-anchor="middle">You</text>
 
-  <!-- Relay nodes arranged around user -->
-  <!-- Relay 1: top -->
+  <!-- PUBLIC KEY card -->
+  <g filter="url(#win-key-glow)">
+    <rect x="82" y="350" width="140" height="54" rx="8" fill="rgba(25,20,60,0.95)" stroke="rgba(253,224,71,0.6)" stroke-width="1.5"/>
+    <!-- Key icon -->
+    <circle cx="106" cy="368" r="7" fill="none" stroke="rgba(253,224,71,0.8)" stroke-width="1.5"/>
+    <line x1="113" y1="368" x2="130" y2="368" stroke="rgba(253,224,71,0.8)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="126" y1="368" x2="126" y2="373" stroke="rgba(253,224,71,0.8)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="130" y1="368" x2="130" y2="373" stroke="rgba(253,224,71,0.8)" stroke-width="1.5" stroke-linecap="round"/>
+    <text x="106" y="394" font-family="'Inter', monospace" font-size="8" fill="rgba(253,224,71,0.6)" text-anchor="start">npub1abc…</text>
+    <text x="147" y="386" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="rgba(253,224,71,0.7)" text-anchor="middle">Public Key</text>
+    <text x="147" y="398" font-family="'Inter', sans-serif" font-size="8" fill="rgba(253,224,71,0.45)" text-anchor="middle">share freely</text>
+  </g>
+
+  <!-- PRIVATE KEY card -->
+  <g filter="url(#win-lock-glow)">
+    <rect x="82" y="416" width="140" height="54" rx="8" fill="rgba(25,20,60,0.95)" stroke="rgba(248,113,113,0.5)" stroke-width="1.5"/>
+    <!-- Lock icon -->
+    <rect x="99" y="432" width="14" height="12" rx="2" fill="none" stroke="rgba(248,113,113,0.75)" stroke-width="1.5"/>
+    <path d="M101,432 Q101,425 106,425 Q111,425 111,432" fill="none" stroke="rgba(248,113,113,0.75)" stroke-width="1.5"/>
+    <circle cx="106" cy="438" r="2" fill="rgba(248,113,113,0.75)"/>
+    <text x="106" y="457" font-family="'Inter', monospace" font-size="8" fill="rgba(248,113,113,0.5)" text-anchor="start">nsec1xyz…</text>
+    <text x="152" y="449" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="rgba(248,113,113,0.65)" text-anchor="middle">Private Key</text>
+    <text x="152" y="461" font-family="'Inter', sans-serif" font-size="8" fill="rgba(248,113,113,0.4)" text-anchor="middle">never share</text>
+  </g>
+
+  <!-- Step 1 label -->
+  <text x="152" y="340" font-family="'Inter', sans-serif" font-size="10" font-weight="600" fill="rgba(167,139,250,0.45)" text-anchor="middle" letter-spacing="1.5">YOUR IDENTITY</text>
+
+  <!-- ── ARROW 1: You → Note ── -->
+  <g opacity="0.6">
+    <line x1="236" y1="260" x2="370" y2="260" stroke="rgba(167,139,250,0.4)" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <polygon points="370,256 382,260 370,264" fill="rgba(167,139,250,0.6)"/>
+  </g>
+
+  <!-- ── STEP 2: SIGNED NOTE (center-left) ── -->
+  <g filter="url(#win-note-glow)">
+    <rect x="390" y="215" width="180" height="100" rx="10" fill="rgba(25,20,60,0.95)" stroke="rgba(167,139,250,0.55)" stroke-width="1.8"/>
+    <!-- Note lines -->
+    <line x1="412" y1="238" x2="548" y2="238" stroke="rgba(167,139,250,0.35)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="412" y1="252" x2="530" y2="252" stroke="rgba(167,139,250,0.25)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="412" y1="266" x2="540" y2="266" stroke="rgba(167,139,250,0.2)" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- Signed badge -->
+    <rect x="412" y="280" width="70" height="18" rx="9" fill="rgba(74,222,128,0.15)" stroke="rgba(74,222,128,0.5)" stroke-width="1"/>
+    <circle cx="424" cy="289" r="3" fill="rgba(74,222,128,0.7)"/>
+    <text x="446" y="293" font-family="'Inter', sans-serif" font-size="8.5" font-weight="600" fill="rgba(74,222,128,0.75)" text-anchor="middle">✓ signed</text>
+    <!-- Author -->
+    <text x="548" y="293" font-family="'Inter', monospace" font-size="7.5" fill="rgba(167,139,250,0.35)" text-anchor="end">npub1abc…</text>
+  </g>
+
+  <text x="480" y="204" font-family="'Inter', sans-serif" font-size="10" font-weight="600" fill="rgba(167,139,250,0.45)" text-anchor="middle" letter-spacing="1.5">YOUR NOTE</text>
+
+  <!-- ── ARROW 2: Note → Relays (3 arrows fanning out) ── -->
+  <!-- Arrow to relay top -->
+  <line x1="570" y1="244" x2="720" y2="155" stroke="rgba(74,222,128,0.3)" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <polygon points="718,150 730,154 722,164" fill="rgba(74,222,128,0.5)"/>
+  <!-- Arrow to relay middle -->
+  <line x1="570" y1="265" x2="725" y2="265" stroke="rgba(74,222,128,0.35)" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <polygon points="722,261 734,265 722,269" fill="rgba(74,222,128,0.55)"/>
+  <!-- Arrow to relay bottom -->
+  <line x1="570" y1="283" x2="720" y2="375" stroke="rgba(74,222,128,0.3)" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <polygon points="718,371 730,375 722,385" fill="rgba(74,222,128,0.5)"/>
+
+  <!-- ── STEP 3: RELAYS (right side, stacked) ── -->
+  <text x="870" y="110" font-family="'Inter', sans-serif" font-size="10" font-weight="600" fill="rgba(74,222,128,0.45)" text-anchor="middle" letter-spacing="1.5">RELAYS</text>
+  <text x="870" y="124" font-family="'Inter', sans-serif" font-size="9" fill="rgba(74,222,128,0.3)" text-anchor="middle">independent servers, worldwide</text>
+
+  <!-- Relay A -->
   <g filter="url(#win-relay-glow)">
-    <circle cx="600" cy="120" r="20" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.6)" stroke-width="1.5"/>
-    <rect x="591" y="112" width="18" height="16" rx="2" fill="none" stroke="rgba(74,222,128,0.7)" stroke-width="1.2"/>
-    <line x1="595" y1="118" x2="605" y2="118" stroke="rgba(74,222,128,0.5)" stroke-width="1"/>
-    <line x1="595" y1="122" x2="603" y2="122" stroke="rgba(74,222,128,0.4)" stroke-width="1"/>
+    <rect x="745" y="118" width="250" height="64" rx="10" fill="rgba(25,20,60,0.95)" stroke="rgba(74,222,128,0.55)" stroke-width="1.5"/>
+    <!-- Server rack icon -->
+    <rect x="762" y="132" width="28" height="8" rx="2" fill="rgba(74,222,128,0.15)" stroke="rgba(74,222,128,0.4)" stroke-width="0.8"/>
+    <rect x="762" y="143" width="28" height="8" rx="2" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.3)" stroke-width="0.8"/>
+    <circle cx="767" cy="136" r="2" fill="rgba(74,222,128,0.8)"/>
+    <circle cx="767" cy="147" r="2" fill="rgba(74,222,128,0.6)"/>
+    <text x="800" y="138" font-family="'Inter', monospace" font-size="10" fill="rgba(74,222,128,0.75)">relay.damus.io</text>
+    <text x="800" y="154" font-family="'Inter', sans-serif" font-size="8.5" fill="rgba(74,222,128,0.4)">Frankfurt · 4,200 notes</text>
+    <!-- Status dot -->
+    <circle cx="975" cy="150" r="5" fill="rgba(74,222,128,0.8)"/>
   </g>
-  <line x1="600" y1="238" x2="600" y2="140" stroke="rgba(74,222,128,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>
 
-  <!-- Relay 2: top-right -->
+  <!-- Relay B -->
   <g filter="url(#win-relay-glow)">
-    <circle cx="780" cy="170" r="20" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.6)" stroke-width="1.5"/>
-    <rect x="771" y="162" width="18" height="16" rx="2" fill="none" stroke="rgba(74,222,128,0.7)" stroke-width="1.2"/>
-    <line x1="775" y1="168" x2="785" y2="168" stroke="rgba(74,222,128,0.5)" stroke-width="1"/>
-    <line x1="775" y1="172" x2="783" y2="172" stroke="rgba(74,222,128,0.4)" stroke-width="1"/>
+    <rect x="745" y="233" width="250" height="64" rx="10" fill="rgba(25,20,60,0.95)" stroke="rgba(74,222,128,0.55)" stroke-width="1.5"/>
+    <rect x="762" y="247" width="28" height="8" rx="2" fill="rgba(74,222,128,0.15)" stroke="rgba(74,222,128,0.4)" stroke-width="0.8"/>
+    <rect x="762" y="258" width="28" height="8" rx="2" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.3)" stroke-width="0.8"/>
+    <circle cx="767" cy="251" r="2" fill="rgba(74,222,128,0.8)"/>
+    <circle cx="767" cy="262" r="2" fill="rgba(74,222,128,0.6)"/>
+    <text x="800" y="253" font-family="'Inter', monospace" font-size="10" fill="rgba(74,222,128,0.75)">nos.lol</text>
+    <text x="800" y="269" font-family="'Inter', sans-serif" font-size="8.5" fill="rgba(74,222,128,0.4)">New York · 8,100 notes</text>
+    <circle cx="975" cy="265" r="5" fill="rgba(74,222,128,0.8)"/>
   </g>
-  <line x1="620" y1="248" x2="762" y2="182" stroke="rgba(74,222,128,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>
 
-  <!-- Relay 3: right -->
+  <!-- Relay C -->
   <g filter="url(#win-relay-glow)">
-    <circle cx="850" cy="320" r="20" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.6)" stroke-width="1.5"/>
-    <rect x="841" y="312" width="18" height="16" rx="2" fill="none" stroke="rgba(74,222,128,0.7)" stroke-width="1.2"/>
-    <line x1="845" y1="318" x2="855" y2="318" stroke="rgba(74,222,128,0.5)" stroke-width="1"/>
-    <line x1="845" y1="322" x2="853" y2="322" stroke="rgba(74,222,128,0.4)" stroke-width="1"/>
+    <rect x="745" y="348" width="250" height="64" rx="10" fill="rgba(25,20,60,0.95)" stroke="rgba(74,222,128,0.55)" stroke-width="1.5"/>
+    <rect x="762" y="362" width="28" height="8" rx="2" fill="rgba(74,222,128,0.15)" stroke="rgba(74,222,128,0.4)" stroke-width="0.8"/>
+    <rect x="762" y="373" width="28" height="8" rx="2" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.3)" stroke-width="0.8"/>
+    <circle cx="767" cy="366" r="2" fill="rgba(74,222,128,0.8)"/>
+    <circle cx="767" cy="377" r="2" fill="rgba(74,222,128,0.6)"/>
+    <text x="800" y="368" font-family="'Inter', monospace" font-size="10" fill="rgba(74,222,128,0.75)">relay.primal.net</text>
+    <text x="800" y="384" font-family="'Inter', sans-serif" font-size="8.5" fill="rgba(74,222,128,0.4)">Toronto · 6,500 notes</text>
+    <circle cx="975" cy="380" r="5" fill="rgba(74,222,128,0.8)"/>
   </g>
-  <line x1="622" y1="265" x2="830" y2="315" stroke="rgba(74,222,128,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>
 
-  <!-- Relay 4: bottom-right -->
-  <g filter="url(#win-relay-glow)">
-    <circle cx="760" cy="450" r="20" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.6)" stroke-width="1.5"/>
-    <rect x="751" y="442" width="18" height="16" rx="2" fill="none" stroke="rgba(74,222,128,0.7)" stroke-width="1.2"/>
-    <line x1="755" y1="448" x2="765" y2="448" stroke="rgba(74,222,128,0.5)" stroke-width="1"/>
-    <line x1="755" y1="452" x2="763" y2="452" stroke="rgba(74,222,128,0.4)" stroke-width="1"/>
+  <!-- "+" more relays hint -->
+  <text x="870" y="438" font-family="'Inter', sans-serif" font-size="9" fill="rgba(74,222,128,0.3)" text-anchor="middle">+ many more — all independent</text>
+
+  <!-- ── STEP 4: CLIENTS reading (bottom) ── -->
+  <!-- Arrow down from relays to clients -->
+  <line x1="870" y1="450" x2="600" y2="510" stroke="rgba(96,165,250,0.25)" stroke-width="1.2" stroke-dasharray="4,4"/>
+  <line x1="870" y1="450" x2="870" y2="510" stroke="rgba(96,165,250,0.25)" stroke-width="1.2" stroke-dasharray="4,4"/>
+
+  <text x="600" y="498" font-family="'Inter', sans-serif" font-size="10" font-weight="600" fill="rgba(96,165,250,0.5)" text-anchor="middle" letter-spacing="1.5">ANY APP CAN READ IT</text>
+
+  <!-- Client: Phone (Damus/Amethyst) -->
+  <g filter="url(#win-app-glow)">
+    <rect x="430" y="515" width="72" height="88" rx="8" fill="rgba(25,20,60,0.9)" stroke="rgba(96,165,250,0.45)" stroke-width="1.2"/>
+    <rect x="438" y="523" width="56" height="62" rx="4" fill="rgba(96,165,250,0.07)"/>
+    <rect x="444" y="534" width="44" height="5" rx="2" fill="rgba(167,139,250,0.3)"/>
+    <rect x="444" y="542" width="36" height="5" rx="2" fill="rgba(167,139,250,0.2)"/>
+    <rect x="444" y="550" width="40" height="5" rx="2" fill="rgba(167,139,250,0.15)"/>
+    <circle cx="466" cy="592" r="4" fill="none" stroke="rgba(96,165,250,0.4)" stroke-width="1"/>
+    <text x="466" y="612" font-family="'Inter', sans-serif" font-size="9" fill="rgba(96,165,250,0.5)" text-anchor="middle">Damus</text>
   </g>
-  <line x1="615" y1="278" x2="742" y2="438" stroke="rgba(74,222,128,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>
 
-  <!-- Relay 5: bottom-left -->
-  <g filter="url(#win-relay-glow)">
-    <circle cx="440" cy="450" r="20" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.6)" stroke-width="1.5"/>
-    <rect x="431" y="442" width="18" height="16" rx="2" fill="none" stroke="rgba(74,222,128,0.7)" stroke-width="1.2"/>
-    <line x1="435" y1="448" x2="445" y2="448" stroke="rgba(74,222,128,0.5)" stroke-width="1"/>
-    <line x1="435" y1="452" x2="443" y2="452" stroke="rgba(74,222,128,0.4)" stroke-width="1"/>
+  <!-- Client: Laptop/Web (Primal) -->
+  <g filter="url(#win-app-glow)">
+    <rect x="527" y="523" width="100" height="66" rx="6" fill="rgba(25,20,60,0.9)" stroke="rgba(96,165,250,0.45)" stroke-width="1.2"/>
+    <rect x="534" y="529" width="86" height="50" rx="3" fill="rgba(96,165,250,0.07)"/>
+    <rect x="540" y="536" width="68" height="5" rx="2" fill="rgba(167,139,250,0.3)"/>
+    <rect x="540" y="544" width="56" height="5" rx="2" fill="rgba(167,139,250,0.2)"/>
+    <rect x="540" y="552" width="62" height="5" rx="2" fill="rgba(167,139,250,0.15)"/>
+    <!-- Laptop base -->
+    <rect x="510" y="589" width="134" height="6" rx="3" fill="rgba(96,165,250,0.25)"/>
+    <text x="577" y="612" font-family="'Inter', sans-serif" font-size="9" fill="rgba(96,165,250,0.5)" text-anchor="middle">Primal</text>
   </g>
-  <line x1="585" y1="278" x2="458" y2="438" stroke="rgba(74,222,128,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>
 
-  <!-- Relay 6: left -->
-  <g filter="url(#win-relay-glow)">
-    <circle cx="350" cy="320" r="20" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.6)" stroke-width="1.5"/>
-    <rect x="341" y="312" width="18" height="16" rx="2" fill="none" stroke="rgba(74,222,128,0.7)" stroke-width="1.2"/>
-    <line x1="345" y1="318" x2="355" y2="318" stroke="rgba(74,222,128,0.5)" stroke-width="1"/>
-    <line x1="345" y1="322" x2="353" y2="322" stroke="rgba(74,222,128,0.4)" stroke-width="1"/>
+  <!-- Client: Another phone (Amethyst) -->
+  <g filter="url(#win-app-glow)">
+    <rect x="652" y="515" width="72" height="88" rx="8" fill="rgba(25,20,60,0.9)" stroke="rgba(96,165,250,0.45)" stroke-width="1.2"/>
+    <rect x="660" y="523" width="56" height="62" rx="4" fill="rgba(96,165,250,0.07)"/>
+    <rect x="666" y="534" width="44" height="5" rx="2" fill="rgba(167,139,250,0.3)"/>
+    <rect x="666" y="542" width="36" height="5" rx="2" fill="rgba(167,139,250,0.2)"/>
+    <rect x="666" y="550" width="40" height="5" rx="2" fill="rgba(167,139,250,0.15)"/>
+    <circle cx="688" cy="592" r="4" fill="none" stroke="rgba(96,165,250,0.4)" stroke-width="1"/>
+    <text x="688" y="612" font-family="'Inter', sans-serif" font-size="9" fill="rgba(96,165,250,0.5)" text-anchor="middle">Amethyst</text>
   </g>
-  <line x1="578" y1="265" x2="370" y2="315" stroke="rgba(74,222,128,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>
 
-  <!-- Relay 7: top-left -->
-  <g filter="url(#win-relay-glow)">
-    <circle cx="420" cy="170" r="20" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.6)" stroke-width="1.5"/>
-    <rect x="411" y="162" width="18" height="16" rx="2" fill="none" stroke="rgba(74,222,128,0.7)" stroke-width="1.2"/>
-    <line x1="415" y1="168" x2="425" y2="168" stroke="rgba(74,222,128,0.5)" stroke-width="1"/>
-    <line x1="415" y1="172" x2="423" y2="172" stroke="rgba(74,222,128,0.4)" stroke-width="1"/>
+  <!-- Client: Coracle -->
+  <g filter="url(#win-app-glow)">
+    <rect x="750" y="523" width="80" height="66" rx="6" fill="rgba(25,20,60,0.9)" stroke="rgba(96,165,250,0.45)" stroke-width="1.2"/>
+    <rect x="757" y="529" width="66" height="50" rx="3" fill="rgba(96,165,250,0.07)"/>
+    <rect x="763" y="536" width="52" height="5" rx="2" fill="rgba(167,139,250,0.3)"/>
+    <rect x="763" y="544" width="42" height="5" rx="2" fill="rgba(167,139,250,0.2)"/>
+    <rect x="763" y="552" width="48" height="5" rx="2" fill="rgba(167,139,250,0.15)"/>
+    <rect x="740" y="589" width="114" height="6" rx="3" fill="rgba(96,165,250,0.25)"/>
+    <text x="790" y="612" font-family="'Inter', sans-serif" font-size="9" fill="rgba(96,165,250,0.5)" text-anchor="middle">Coracle</text>
   </g>
-  <line x1="580" y1="248" x2="438" y2="182" stroke="rgba(74,222,128,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>
 
-  <!-- Sparkle effects -->
-  <g opacity="0.8">
-    <line x1="640" y1="105" x2="640" y2="90" stroke="rgba(74,222,128,0.7)" stroke-width="1.5"/>
-    <line x1="632" y1="97" x2="648" y2="97" stroke="rgba(74,222,128,0.7)" stroke-width="1.5"/>
-    <line x1="380" y1="155" x2="380" y2="143" stroke="rgba(250,204,21,0.6)" stroke-width="1.5"/>
-    <line x1="374" y1="149" x2="386" y2="149" stroke="rgba(250,204,21,0.6)" stroke-width="1.5"/>
-    <line x1="890" y1="340" x2="890" y2="353" stroke="rgba(167,139,250,0.7)" stroke-width="1.5"/>
-    <line x1="883" y1="346" x2="897" y2="346" stroke="rgba(167,139,250,0.7)" stroke-width="1.5"/>
-    <circle cx="310" cy="350" r="2" fill="rgba(74,222,128,0.6)"/>
-    <circle cx="820" cy="160" r="2" fill="rgba(250,204,21,0.6)"/>
-    <circle cx="480" cy="480" r="2" fill="rgba(167,139,250,0.5)"/>
+  <!-- Tagline -->
+  <text x="600" y="50" font-family="'Inter', sans-serif" font-size="14" font-weight="700" fill="rgba(167,139,250,0.55)" text-anchor="middle" letter-spacing="2">YOUR KEYS. YOUR NOTES. YOUR RELAYS.</text>
+
+  <!-- Sparkles -->
+  <g opacity="0.7">
+    <line x1="352" y1="230" x2="352" y2="218" stroke="rgba(253,224,71,0.6)" stroke-width="1.5"/>
+    <line x1="346" y1="224" x2="358" y2="224" stroke="rgba(253,224,71,0.6)" stroke-width="1.5"/>
+    <line x1="700" y1="88" x2="700" y2="76" stroke="rgba(74,222,128,0.6)" stroke-width="1.5"/>
+    <line x1="694" y1="82" x2="706" y2="82" stroke="rgba(74,222,128,0.6)" stroke-width="1.5"/>
+    <circle cx="1020" cy="310" r="2" fill="rgba(74,222,128,0.5)"/>
+    <circle cx="340" cy="480" r="2" fill="rgba(167,139,250,0.4)"/>
   </g>
 
 </svg>
