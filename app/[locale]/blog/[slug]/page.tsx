@@ -115,6 +115,19 @@ export default async function BlogPostPage({ params }: Props) {
       '@type': 'Person',
       'name': post.author.name,
       'url': post.author.npub ? `https://njump.me/${post.author.npub}` : undefined,
+      'affiliation': {
+        '@type': 'Organization',
+        'name': 'Nostr Web of Trust',
+        'url': 'https://nostr-wot.com',
+      },
+      ...(post.author.socials && {
+        'sameAs': [
+          post.author.socials.twitter && `https://twitter.com/${post.author.socials.twitter}`,
+          post.author.socials.github && `https://github.com/${post.author.socials.github}`,
+          post.author.socials.linkedin && `https://linkedin.com/in/${post.author.socials.linkedin}`,
+          post.author.npub && `https://njump.me/${post.author.npub}`,
+        ].filter(Boolean),
+      }),
     },
     'publisher': {
       '@type': 'Organization',
@@ -131,11 +144,40 @@ export default async function BlogPostPage({ params }: Props) {
     'keywords': post.tags.join(', '),
   };
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Home',
+        'item': 'https://nostr-wot.com',
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'Blog',
+        'item': getFullUrl('/blog', locale as Locale),
+      },
+      {
+        '@type': 'ListItem',
+        'position': 3,
+        'name': post.title,
+        'item': getFullUrl(`/blog/${slug}`, locale as Locale),
+      },
+    ],
+  };
+
   return (
     <BlogPostWrapper translations={post.translations}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <main className="py-4 mb-14">
         <article>

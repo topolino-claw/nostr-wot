@@ -128,11 +128,33 @@ export default async function DownloadPage() {
     "cd nostr-wot-extension && npm install && npm run build",
   ];
 
+  const faqItems = FAQ_KEYS.map(key => ({
+    question: t(`faq.items.${key}.question`),
+    answer: t(`faq.items.${key}.answer`),
+  }));
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map((item) => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer,
+      },
+    })),
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <main>
         {/* Hero + Downloads */}
@@ -244,10 +266,7 @@ export default async function DownloadPage() {
         <ScrollReveal animation="fade-up">
           <SectionHeader title={t("faq.title")} />
         </ScrollReveal>
-        <AccordionList items={FAQ_KEYS.map(key => ({
-          question: t(`faq.items.${key}.question`),
-          answer: t(`faq.items.${key}.answer`),
-        }))} />
+        <AccordionList items={faqItems} />
       </Section>
       </main>
     </>

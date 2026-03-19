@@ -122,6 +122,11 @@ export default async function GuidePostPage({ params }: Props) {
       '@type': 'Person',
       'name': guide.author.name,
       'url': guide.author.npub ? `https://njump.me/${guide.author.npub}` : undefined,
+      'affiliation': {
+        '@type': 'Organization',
+        'name': 'Nostr Web of Trust',
+        'url': 'https://nostr-wot.com',
+      },
     },
     'publisher': {
       '@type': 'Organization',
@@ -138,6 +143,31 @@ export default async function GuidePostPage({ params }: Props) {
     'keywords': guide.tags.join(', '),
   };
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Home',
+        'item': 'https://nostr-wot.com',
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'Guides',
+        'item': getFullUrl('/guides', locale as Locale),
+      },
+      {
+        '@type': 'ListItem',
+        'position': 3,
+        'name': guide.title,
+        'item': getFullUrl(`/guides/${slug}`, locale as Locale),
+      },
+    ],
+  };
+
   const formatDate = (dateString: string, loc: string = 'en') => {
     const date = new Date(dateString);
     return date.toLocaleDateString(loc, {
@@ -152,6 +182,10 @@ export default async function GuidePostPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <main className="py-4 mb-14">
         <article>

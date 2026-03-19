@@ -6,6 +6,8 @@ import ScrollReveal from "./ScrollReveal";
 export interface AccordionItem {
   question: string;
   answer: string;
+  /** If true, answer is rendered as HTML instead of plain text */
+  richAnswer?: boolean;
 }
 
 export function AccordionList({ items }: { items: AccordionItem[] }) {
@@ -20,7 +22,14 @@ export function AccordionList({ items }: { items: AccordionItem[] }) {
                 <ChevronDownIcon className="w-5 h-5 text-gray-500 transition-transform group-open:rotate-180 flex-shrink-0" />
               </summary>
               <div className="px-6 pb-6 pt-0">
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{item.answer}</p>
+                {item.richAnswer ? (
+                  <div
+                    className="text-gray-600 dark:text-gray-400 leading-relaxed prose-sm [&_a]:text-primary [&_a]:hover:underline [&_strong]:text-gray-700 [&_strong]:dark:text-gray-300"
+                    dangerouslySetInnerHTML={{ __html: item.answer }}
+                  />
+                ) : (
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{item.answer}</p>
+                )}
               </div>
             </details>
           </ScrollReveal>

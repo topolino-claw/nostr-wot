@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Link } from '@/i18n/routing';
 import { CodeBlock, ScrollReveal } from '@/components/ui';
 import { WikiLink } from './WikiPreview';
+import { Citation, BibEntry, Bibliography, Statistic, ExpertQuote } from './CitationComponents';
 
 // Custom components for MDX
 const components = {
@@ -98,6 +99,15 @@ const components = {
   ),
   em: (props: React.HTMLAttributes<HTMLElement>) => (
     <em className="italic" {...props} />
+  ),
+  // Citation & reference components
+  Citation,
+  BibEntry,
+  Bibliography,
+  Statistic,
+  ExpertQuote,
+  cite: (props: React.HTMLAttributes<HTMLElement>) => (
+    <cite className="italic text-gray-700 dark:text-gray-300" {...props} />
   ),
   // Custom components
   WikiLink,
