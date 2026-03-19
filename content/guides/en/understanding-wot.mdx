@@ -38,7 +38,7 @@ Hops measure the shortest path between you and another Nostr user through follow
 
 These are the people you follow directly. They are your immediate trust circle. The extension assigns the highest trust to these connections because you explicitly chose to follow them.
 
-![A direct follow gets a 100% trust score — the blue ring appears around their avatar on any Nostr client, showing they are in your Web of Trust](/images/guides/understanding-wot/trust-badge-profile.jpg)
+![The trust badge ring around a profile avatar — 80% trust score at 2 hops with 71 shortest paths. Hover the badge to see the full breakdown](/images/guides/understanding-wot/trust-badge-profile.jpg)
 
 ### 2nd Degree (2 Hops)
 
@@ -72,8 +72,6 @@ While the exact thresholds are configurable, a typical setup works like this:
 - **Medium trust** — 2nd-degree contacts with fewer paths and some 3rd-degree users with multiple connections.
 - **Low trust** — 3rd-degree contacts with thin connections.
 - **Unknown** — users with no path to you in the trust graph.
-
-![Hovering the trust badge reveals the exact data — this 2nd-degree contact has 35 shortest paths connecting them to you, resulting in a 60% trust score](/images/guides/understanding-wot/trust-tooltip.jpg)
 
 ## Trust Is Personal
 
