@@ -26,7 +26,7 @@ Last updated: 2026-03-19
 | 6 | zapping-auto-approve | beginner | ✅ Live (unmodified) | — | 2026-03-11 | — | ❌ Pending |
 | 7 | lightning-address | beginner | ✅ Live (unmodified) | — | 2026-03-11 | — | ❌ Pending |
 | 8 | site-permissions | intermediate | ✅ Live (modified by PR) | 🟡 Screenshots added | 2026-03-18 | 5 screenshots | ✅ Complete |
-| 9 | wot-playground | intermediate | ✅ Live (unmodified) | — | 2026-03-11 | — | ❌ Pending |
+| 9 | wot-playground | intermediate | ✅ Live (modified by PR) | 🟡 Screenshots added | 2026-03-19 | 2 screenshots | ⚠️ Pending review — ⚠️ NOTE: playground needs significant work, current screenshots are provisional |
 
 ---
 
