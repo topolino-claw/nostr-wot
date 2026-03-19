@@ -1,0 +1,100 @@
+<svg width="800" height="320" viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cc-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1b4b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#312e81;stop-opacity:1" />
+    </linearGradient>
+    <filter id="cc-glow-orange" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#f59e0b" flood-opacity="0.5"/>
+    </filter>
+    <filter id="cc-glow-blue" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#3b82f6" flood-opacity="0.5"/>
+    </filter>
+    <filter id="cc-glow-purple" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#a855f7" flood-opacity="0.5"/>
+    </filter>
+    <filter id="cc-glow-violet" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#8b5cf6" flood-opacity="0.5"/>
+    </filter>
+    <filter id="cc-badge-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#4ade80" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="320" fill="url(#cc-bg)"/>
+
+  <!-- Caption -->
+  <text x="400" y="30" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="rgba(167,139,250,0.55)" text-anchor="middle" letter-spacing="2">PICK A CLIENT</text>
+
+  <!-- Card 1: Primal -->
+  <g>
+    <rect x="30" y="50" width="170" height="220" rx="12" fill="rgba(20,15,50,0.95)" stroke="rgba(245,158,11,0.45)" stroke-width="1.5"/>
+    <!-- Lightning bolt icon -->
+    <g filter="url(#cc-glow-orange)" transform="translate(115,110)">
+      <polygon points="-8,-22 4,-4 -2,-4 8,22 -4,4 2,4" fill="rgba(245,158,11,0.85)" stroke="rgba(245,158,11,0.4)" stroke-width="0.5"/>
+    </g>
+    <!-- App name -->
+    <text x="115" y="160" font-family="'Inter', sans-serif" font-size="16" font-weight="700" fill="rgba(245,158,11,0.9)" text-anchor="middle">Primal</text>
+    <!-- Platform -->
+    <text x="115" y="180" font-family="'Inter', sans-serif" font-size="10" fill="rgba(245,158,11,0.45)" text-anchor="middle">Web · iOS · Android</text>
+    <!-- Recommended badge -->
+    <g filter="url(#cc-badge-glow)">
+      <rect x="52" y="200" width="126" height="22" rx="11" fill="rgba(74,222,128,0.12)" stroke="rgba(74,222,128,0.5)" stroke-width="1"/>
+      <text x="115" y="215" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="rgba(74,222,128,0.85)" text-anchor="middle">★ Recommended</text>
+    </g>
+    <!-- Subtle card highlight -->
+    <rect x="30" y="50" width="170" height="220" rx="12" fill="none" stroke="rgba(74,222,128,0.15)" stroke-width="0.5"/>
+  </g>
+
+  <!-- Card 2: Coracle -->
+  <g>
+    <rect x="220" y="50" width="170" height="220" rx="12" fill="rgba(20,15,50,0.95)" stroke="rgba(59,130,246,0.45)" stroke-width="1.5"/>
+    <!-- Wave/anchor icon -->
+    <g filter="url(#cc-glow-blue)" transform="translate(305,105)">
+      <path d="M-16,6 Q-8,-12 0,0 Q8,-12 16,6" fill="none" stroke="rgba(59,130,246,0.85)" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M-12,12 Q-4,-4 4,8 Q10,-2 16,10" fill="none" stroke="rgba(59,130,246,0.5)" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="0" cy="-8" r="3" fill="rgba(59,130,246,0.7)"/>
+    </g>
+    <!-- App name -->
+    <text x="305" y="160" font-family="'Inter', sans-serif" font-size="16" font-weight="700" fill="rgba(59,130,246,0.9)" text-anchor="middle">Coracle</text>
+    <!-- Platform -->
+    <text x="305" y="180" font-family="'Inter', sans-serif" font-size="10" fill="rgba(59,130,246,0.45)" text-anchor="middle">Web</text>
+  </g>
+
+  <!-- Card 3: Damus -->
+  <g>
+    <rect x="410" y="50" width="170" height="220" rx="12" fill="rgba(20,15,50,0.95)" stroke="rgba(168,85,247,0.45)" stroke-width="1.5"/>
+    <!-- Flower/blossom icon -->
+    <g filter="url(#cc-glow-purple)" transform="translate(495,105)">
+      <circle cx="0" cy="-10" r="6" fill="rgba(168,85,247,0.55)" stroke="rgba(168,85,247,0.3)" stroke-width="0.5"/>
+      <circle cx="9" cy="-3" r="6" fill="rgba(168,85,247,0.5)" stroke="rgba(168,85,247,0.3)" stroke-width="0.5"/>
+      <circle cx="6" cy="8" r="6" fill="rgba(168,85,247,0.45)" stroke="rgba(168,85,247,0.3)" stroke-width="0.5"/>
+      <circle cx="-6" cy="8" r="6" fill="rgba(168,85,247,0.45)" stroke="rgba(168,85,247,0.3)" stroke-width="0.5"/>
+      <circle cx="-9" cy="-3" r="6" fill="rgba(168,85,247,0.5)" stroke="rgba(168,85,247,0.3)" stroke-width="0.5"/>
+      <circle cx="0" cy="0" r="4" fill="rgba(168,85,247,0.9)"/>
+    </g>
+    <!-- App name -->
+    <text x="495" y="160" font-family="'Inter', sans-serif" font-size="16" font-weight="700" fill="rgba(168,85,247,0.9)" text-anchor="middle">Damus</text>
+    <!-- Platform -->
+    <text x="495" y="180" font-family="'Inter', sans-serif" font-size="10" fill="rgba(168,85,247,0.45)" text-anchor="middle">iOS</text>
+  </g>
+
+  <!-- Card 4: Amethyst -->
+  <g>
+    <rect x="600" y="50" width="170" height="220" rx="12" fill="rgba(20,15,50,0.95)" stroke="rgba(139,92,246,0.45)" stroke-width="1.5"/>
+    <!-- Gem/crystal icon -->
+    <g filter="url(#cc-glow-violet)" transform="translate(685,105)">
+      <polygon points="0,-18 14,-4 8,14 -8,14 -14,-4" fill="rgba(139,92,246,0.5)" stroke="rgba(139,92,246,0.8)" stroke-width="1.5" stroke-linejoin="round"/>
+      <line x1="0" y1="-18" x2="-8" y2="14" stroke="rgba(139,92,246,0.35)" stroke-width="0.8"/>
+      <line x1="0" y1="-18" x2="8" y2="14" stroke="rgba(139,92,246,0.35)" stroke-width="0.8"/>
+      <line x1="-14" y1="-4" x2="14" y2="-4" stroke="rgba(139,92,246,0.3)" stroke-width="0.8"/>
+    </g>
+    <!-- App name -->
+    <text x="685" y="160" font-family="'Inter', sans-serif" font-size="16" font-weight="700" fill="rgba(139,92,246,0.9)" text-anchor="middle">Amethyst</text>
+    <!-- Platform -->
+    <text x="685" y="180" font-family="'Inter', sans-serif" font-size="10" fill="rgba(139,92,246,0.45)" text-anchor="middle">Android</text>
+  </g>
+
+  <!-- Footer note -->
+  <text x="400" y="305" font-family="'Inter', sans-serif" font-size="10" fill="rgba(167,139,250,0.35)" text-anchor="middle">All clients use the same protocol — your identity and posts work across all of them</text>
+</svg>
