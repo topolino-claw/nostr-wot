@@ -64,8 +64,8 @@
   <text x="400" y="228" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="rgba(96,165,250,0.7)" text-anchor="middle">Pick a Client</text>
 
   <!-- Curve arrow from row 1 to row 2 -->
-  <path d="M 440,175 Q 500,175 500,220 Q 500,255 460,265" fill="none" stroke="rgba(167,139,250,0.2)" stroke-width="1.2" stroke-dasharray="3,3"/>
-  <polygon points="457,269 462,257 470,265" fill="rgba(167,139,250,0.35)"/>
+  <path d="M 440,180 Q 540,180 535,245" fill="none" stroke="rgba(167,139,250,0.2)" stroke-width="1.2" stroke-dasharray="3,3"/>
+  <polygon points="525,243 530,255 535,243" fill="rgba(167,139,250,0.35)"/>
 
   <!-- ROW 2 -->
 

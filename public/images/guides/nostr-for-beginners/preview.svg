@@ -1,28 +1,28 @@
-<svg width="800" height="450" xmlns="http://www.w3.org/2000/svg">
+<svg width="1200" height="630" viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="nfbp-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="nfbf-bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#1e1b4b;stop-opacity:1" />
       <stop offset="50%" style="stop-color:#312e81;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#4c1d95;stop-opacity:1" />
     </linearGradient>
-    <filter id="nfbp-step" x="-40%" y="-40%" width="180%" height="180%">
+    <filter id="nfbf-step" x="-40%" y="-40%" width="180%" height="180%">
       <feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="#a78bfa" flood-opacity="0.65"/>
     </filter>
-    <filter id="nfbp-key" x="-50%" y="-50%" width="200%" height="200%">
+    <filter id="nfbf-key" x="-50%" y="-50%" width="200%" height="200%">
       <feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="#fde047" flood-opacity="0.65"/>
     </filter>
-    <filter id="nfbp-app" x="-50%" y="-50%" width="200%" height="200%">
+    <filter id="nfbf-app" x="-50%" y="-50%" width="200%" height="200%">
       <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#60a5fa" flood-opacity="0.55"/>
     </filter>
-    <filter id="nfbp-relay" x="-50%" y="-50%" width="200%" height="200%">
+    <filter id="nfbf-relay" x="-50%" y="-50%" width="200%" height="200%">
       <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#4ade80" flood-opacity="0.55"/>
     </filter>
-    <filter id="nfbp-post" x="-50%" y="-50%" width="200%" height="200%">
+    <filter id="nfbf-post" x="-50%" y="-50%" width="200%" height="200%">
       <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#f472b6" flood-opacity="0.5"/>
     </filter>
   </defs>
 
-  <rect width="800" height="450" fill="url(#nfbp-bg)"/>
+  <rect width="1200" height="630" viewBox="0 0 800 450" fill="url(#nfbf-bg)"/>
 
   <text x="400" y="40" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="rgba(167,139,250,0.5)" text-anchor="middle" letter-spacing="2">YOUR FIRST STEPS ON NOSTR</text>
 
@@ -30,7 +30,7 @@
   <!-- ROW 1 -->
 
   <!-- Step 1 -->
-  <g filter="url(#nfbp-step)">
+  <g filter="url(#nfbf-step)">
     <circle cx="130" cy="175" r="40" fill="rgba(20,15,50,0.95)" stroke="rgba(167,139,250,0.65)" stroke-width="1.8"/>
     <text x="130" y="165" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="rgba(167,139,250,0.4)" text-anchor="middle">STEP</text>
     <text x="130" y="186" font-family="'Inter', sans-serif" font-size="22" font-weight="800" fill="rgba(167,139,250,0.85)" text-anchor="middle">1</text>
@@ -41,7 +41,7 @@
   <polygon points="215,171 225,175 215,179" fill="rgba(167,139,250,0.4)"/>
 
   <!-- Step 2 -->
-  <g filter="url(#nfbp-key)">
+  <g filter="url(#nfbf-key)">
     <circle cx="265" cy="175" r="40" fill="rgba(20,15,50,0.95)" stroke="rgba(253,224,71,0.65)" stroke-width="1.8"/>
     <circle cx="255" cy="170" r="8" fill="none" stroke="rgba(253,224,71,0.8)" stroke-width="2"/>
     <line x1="263" y1="170" x2="278" y2="170" stroke="rgba(253,224,71,0.8)" stroke-width="2" stroke-linecap="round"/>
@@ -54,7 +54,7 @@
   <polygon points="350,171 360,175 350,179" fill="rgba(167,139,250,0.4)"/>
 
   <!-- Step 3 -->
-  <g filter="url(#nfbp-app)">
+  <g filter="url(#nfbf-app)">
     <circle cx="400" cy="175" r="40" fill="rgba(20,15,50,0.95)" stroke="rgba(96,165,250,0.65)" stroke-width="1.8"/>
     <rect x="386" y="160" width="16" height="24" rx="3" fill="none" stroke="rgba(96,165,250,0.65)" stroke-width="1.8"/>
     <rect x="388" y="178" width="12" height="2" rx="1" fill="rgba(96,165,250,0.4)"/>
@@ -64,13 +64,13 @@
   <text x="400" y="228" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="rgba(96,165,250,0.7)" text-anchor="middle">Pick a Client</text>
 
   <!-- Curve arrow from row 1 to row 2 -->
-  <path d="M 440,175 Q 500,175 500,220 Q 500,255 460,265" fill="none" stroke="rgba(167,139,250,0.2)" stroke-width="1.2" stroke-dasharray="3,3"/>
-  <polygon points="457,269 462,257 470,265" fill="rgba(167,139,250,0.35)"/>
+  <path d="M 440,180 Q 540,180 535,245" fill="none" stroke="rgba(167,139,250,0.2)" stroke-width="1.2" stroke-dasharray="3,3"/>
+  <polygon points="525,243 530,255 535,243" fill="rgba(167,139,250,0.35)"/>
 
   <!-- ROW 2 -->
 
   <!-- Step 4 -->
-  <g filter="url(#nfbp-relay)">
+  <g filter="url(#nfbf-relay)">
     <circle cx="530" cy="285" r="40" fill="rgba(20,15,50,0.95)" stroke="rgba(74,222,128,0.65)" stroke-width="1.8"/>
     <rect x="516" y="268" width="28" height="7" rx="1.5" fill="rgba(74,222,128,0.18)" stroke="rgba(74,222,128,0.4)" stroke-width="1"/>
     <rect x="516" y="278" width="28" height="7" rx="1.5" fill="rgba(74,222,128,0.12)"/>
@@ -85,7 +85,7 @@
   <polygon points="441,281 431,285 441,289" fill="rgba(167,139,250,0.4)"/>
 
   <!-- Step 5 -->
-  <g filter="url(#nfbp-step)">
+  <g filter="url(#nfbf-step)">
     <circle cx="390" cy="285" r="40" fill="rgba(20,15,50,0.95)" stroke="rgba(167,139,250,0.65)" stroke-width="1.8"/>
     <circle cx="378" cy="276" r="6" fill="rgba(167,139,250,0.5)"/>
     <path d="M370,285 Q370,280 378,280 Q386,280 386,285" fill="rgba(167,139,250,0.35)"/>
@@ -101,7 +101,7 @@
   <polygon points="301,281 291,285 301,289" fill="rgba(167,139,250,0.4)"/>
 
   <!-- Step 6 -->
-  <g filter="url(#nfbp-post)">
+  <g filter="url(#nfbf-post)">
     <circle cx="250" cy="285" r="40" fill="rgba(20,15,50,0.95)" stroke="rgba(244,114,182,0.65)" stroke-width="1.8"/>
     <rect x="232" y="268" width="36" height="26" rx="6" fill="rgba(244,114,182,0.12)" stroke="rgba(244,114,182,0.55)" stroke-width="1.5"/>
     <path d="M240,294 L236,304 L248,294" fill="rgba(244,114,182,0.12)" stroke="rgba(244,114,182,0.55)" stroke-width="1.5" stroke-linejoin="round"/>
