@@ -38,23 +38,13 @@ Hops measure the shortest path between you and another Nostr user through follow
 
 These are the people you follow directly. They are your immediate trust circle. The extension assigns the highest trust to these connections because you explicitly chose to follow them.
 
-![A direct follow gets a 100% trust score — the blue ring appears around their avatar on any Nostr client](/images/guides/understanding-wot/trust-badge-profile.jpg)
-
 ### 2nd Degree (2 Hops)
 
 These are people followed by the people you follow. You may not know them personally, but someone you trust has chosen to follow them. This is a strong signal — your friends vouch for them by following them.
 
-![corndalarian — a 2nd-degree contact at 80% trust score, 2 hops away through 71 independent paths. The more paths, the higher the score](/images/guides/understanding-wot/trust-badge-2hop.jpg)
-
-![Hovering the badge reveals 2 hops, 35 shortest paths, and a 60% trust score — multiple paths to the same person increase their score](/images/guides/understanding-wot/trust-tooltip-2hop.jpg)
-
 ### 3rd Degree (3 Hops)
 
 Three steps away from you. The connection is weaker but still present. These users are followed by someone who is followed by someone you follow. At this distance, trust is lower but still meaningful — especially if multiple paths connect you.
-
-![MobileSyrup — a 3rd-degree contact at 15% trust score, 3 hops away through a single path. Thin connection, low score, but still visible in your Web of Trust](/images/guides/understanding-wot/trust-badge-3hop.jpg)
-
-![Hovering the badge on MobileSyrup: Distance 3 hops, 1 shortest path, Trust score 15%](/images/guides/understanding-wot/trust-tooltip-3hop.jpg)
 
 <Callout type="tip">
 The more independent paths that connect you to someone, the higher their trust score. A person reached through five different 2nd-degree connections is more trusted than someone reached through a single 2nd-degree connection.
