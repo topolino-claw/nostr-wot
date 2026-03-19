@@ -25,6 +25,9 @@
   <clipPath id="coracle-clip">
     <circle cx="305" cy="105" r="40"/>
   </clipPath>
+  <clipPath id="damus-clip">
+    <circle cx="495" cy="105" r="40"/>
+  </clipPath>
 </defs>
 
   <rect width="800" height="320" fill="url(#cc-bg)"/>
@@ -64,15 +67,8 @@
   <!-- Card 3: Damus -->
   <g>
     <rect x="410" y="50" width="170" height="220" rx="12" fill="rgba(20,15,50,0.95)" stroke="rgba(168,85,247,0.45)" stroke-width="1.5"/>
-    <!-- Flower/blossom icon -->
-    <g filter="url(#cc-glow-purple)" transform="translate(495,105)">
-      <circle cx="0" cy="-10" r="6" fill="rgba(168,85,247,0.55)" stroke="rgba(168,85,247,0.3)" stroke-width="0.5"/>
-      <circle cx="9" cy="-3" r="6" fill="rgba(168,85,247,0.5)" stroke="rgba(168,85,247,0.3)" stroke-width="0.5"/>
-      <circle cx="6" cy="8" r="6" fill="rgba(168,85,247,0.45)" stroke="rgba(168,85,247,0.3)" stroke-width="0.5"/>
-      <circle cx="-6" cy="8" r="6" fill="rgba(168,85,247,0.45)" stroke="rgba(168,85,247,0.3)" stroke-width="0.5"/>
-      <circle cx="-9" cy="-3" r="6" fill="rgba(168,85,247,0.5)" stroke="rgba(168,85,247,0.3)" stroke-width="0.5"/>
-      <circle cx="0" cy="0" r="4" fill="rgba(168,85,247,0.9)"/>
-    </g>
+    <!-- Damus logo -->
+    <image x="455" y="65" width="80" height="80" href="data:image/jpeg;base64,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" clip-path="url(#damus-clip)" preserveAspectRatio="xMidYMid slice"/>
     <!-- App name -->
     <text x="495" y="160" font-family="'Inter', sans-serif" font-size="16" font-weight="700" fill="rgba(168,85,247,0.9)" text-anchor="middle">Damus</text>
     <!-- Platform -->
