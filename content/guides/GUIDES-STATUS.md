@@ -16,7 +16,7 @@ Last updated: 2026-03-19
 | # | Guide | Difficulty | Live on nostr-wot.com | PR #3 Status | Last Reviewed | Inline Images | Screenshot Status |
 |---|-------|-----------|----------------------|-------------|--------------|---------------|------------------|
 | 0.1 | what-is-nostr | beginner | ❌ Not live | 🟡 New file in PR | 2026-03-19 | 2 SVG diagrams | ✅ Ready to publish — ⚠️ known issue: text overlaps first 3 relays in relay-nodes.svg (fix deferred) |
-| 0.2 | why-nostr-is-resilient | beginner | ❌ Not live | 🟡 New file in PR | 2026-03-13 | 2 SVG diagrams | ✅ Complete |
+| 0.2 | why-nostr-is-resilient | beginner | ❌ Not live | 🟡 New file in PR | 2026-03-19 | 2 SVG diagrams | ✅ Ready to publish |
 | 0.3 | nostr-for-beginners | beginner | ❌ Not live | 🟡 New file in PR | 2026-03-13 | — | ⚠️ No inline images |
 | 1 | getting-started | beginner | ✅ Live (modified by PR) | 🟡 Screenshots added | 2026-03-18 | 3 screenshots | ✅ Complete |
 | 2 | managing-identity | beginner | ✅ Live (modified by PR) | 🟡 Screenshots added | 2026-03-18 | 4 screenshots | ✅ Complete |
