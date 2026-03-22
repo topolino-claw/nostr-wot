@@ -422,8 +422,27 @@ export function useGraphData() {
           }
         }
 
-        if (newNodes.length > 0 || newLinks.length > 0) {
-          mergeData({ nodes: newNodes, links: newLinks });
+        // UX/perf cap: only render the top 150 new nodes by trust score.
+        // Expanding 500-1000 nodes at once causes a visual explosion the
+        // force simulation can never settle. The highest-trust nodes are
+        // the most relevant anyway; the rest are silently dropped.
+        const MAX_NEW_NODES_PER_EXPANSION = 150;
+        let cappedNodes = newNodes;
+        if (newNodes.length > MAX_NEW_NODES_PER_EXPANSION) {
+          cappedNodes = [...newNodes]
+            .sort((a, b) => b.trustScore - a.trustScore)
+            .slice(0, MAX_NEW_NODES_PER_EXPANSION);
+        }
+
+        // Only keep links whose target is in the capped set or already exists
+        const cappedNodeIds = new Set(cappedNodes.map(n => n.id));
+        const cappedLinks = newLinks.filter(l => {
+          const targetId = typeof l.target === 'string' ? l.target : (l.target as GraphNode).id;
+          return existingIds.has(targetId) || cappedNodeIds.has(targetId);
+        });
+
+        if (cappedNodes.length > 0 || cappedLinks.length > 0) {
+          mergeData({ nodes: cappedNodes, links: cappedLinks });
         }
 
         if (newPubkeys.length > 0) {

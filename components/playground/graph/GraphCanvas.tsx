@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useEffect, useState, useMemo } from "react";
+import { forceCollide } from "d3-force";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import { useGraph } from "@/contexts/GraphContext";
@@ -48,6 +49,10 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
   const [clickedNodeId, setClickedNodeId] = useState<string | null>(null);
   const [clickAnimationPhase, setClickAnimationPhase] = useState(0);
 
+  // Preserve node positions across re-renders so the simulation doesn't
+  // reset already-settled nodes when new data arrives via mergeData.
+  const prevNodePositions = useRef<Map<string, { x: number; y: number }>>(new Map());
+
   // Check if we should use static layout (no physics) for performance
   const useStaticLayout = filteredData.nodes.length > DISABLE_SIMULATION_THRESHOLD;
 
@@ -64,6 +69,18 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
         return nodeIds.has(sourceId) && nodeIds.has(targetId);
       })
       .slice(0, MAX_VISIBLE_LINKS);
+
+    // Restore previously simulated positions so nodes that have already
+    // settled don't jump when the graph data updates with new nodes.
+    nodes.forEach((node) => {
+      const prev = prevNodePositions.current.get(node.id);
+      if (prev) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (node as any).x = prev.x;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (node as any).y = prev.y;
+      }
+    });
 
     // Pre-compute positions for large graphs (radial layout by distance)
     if (useStaticLayout) {
@@ -298,6 +315,32 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
     [visibleData.nodes]
   );
 
+  // Persist simulated positions so they survive data updates
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (graphRef.current) {
+        const gData = graphRef.current.graphData();
+        if (gData?.nodes) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          gData.nodes.forEach((n: any) => {
+            if (n.x !== undefined && n.y !== undefined) {
+              prevNodePositions.current.set(n.id, { x: n.x, y: n.y });
+            }
+          });
+        }
+      }
+    }, 2000); // snapshot positions every 2s
+    return () => clearInterval(interval);
+  }, []);
+
+  // Tune d3 forces: stronger repulsion + collision avoidance
+  useEffect(() => {
+    if (graphRef.current && !useStaticLayout) {
+      graphRef.current.d3Force('charge')?.strength(-80);
+      graphRef.current.d3Force('collision', forceCollide(8));
+    }
+  }, [visibleData.nodes.length, useStaticLayout]);
+
   // Center camera on root node after initial load
   useEffect(() => {
     if (graphRef.current && visibleData.nodes.length > 0) {
@@ -354,10 +397,10 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
         linkDirectionalArrowLength={settings.showArrows && !useStaticLayout ? 2 : 0}
         linkDirectionalArrowRelPos={1}
         // Disable simulation for large graphs (positions pre-computed)
-        d3AlphaDecay={useStaticLayout ? 1 : 0.05}
-        d3VelocityDecay={useStaticLayout ? 1 : 0.4}
-        cooldownTicks={useStaticLayout ? 0 : 100}
-        warmupTicks={useStaticLayout ? 0 : 50}
+        d3AlphaDecay={useStaticLayout ? 1 : 0.03}
+        d3VelocityDecay={useStaticLayout ? 1 : 0.3}
+        cooldownTicks={useStaticLayout ? 0 : 300}
+        warmupTicks={useStaticLayout ? 0 : 30}
         enableNodeDrag={!useStaticLayout}
         enableZoomInteraction={true}
         enablePanInteraction={true}
