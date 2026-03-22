@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useEffect, useState, useMemo } from "react";
-import { forceCollide } from "d3-force";
+import { forceCollide } from "d3-force-3d";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import { useGraph } from "@/contexts/GraphContext";
