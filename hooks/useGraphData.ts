@@ -363,10 +363,11 @@ export function useGraphData() {
         const newLinks: GraphEdge[] = [];
 
         // Get the parent node's current position from the live graph data
-        // (react-force-graph mutates node objects with x/y during simulation)
+        // (react-force-graph mutates node objects with x/y/z during simulation)
         const parentNode = latestState.data.nodes.find((n) => n.id === pubkey);
         const parentX = parentNode?.x ?? 0;
         const parentY = parentNode?.y ?? 0;
+        const parentZ = parentNode?.z ?? 0;
 
         // Count how many new nodes we'll create, for even angular spread
         const newFollowPubkeys = follows.filter((pk: string) => !existingIds.has(pk));
@@ -391,14 +392,16 @@ export function useGraphData() {
           if (!existingIds.has(followPubkey)) {
             const cachedProfile = profileCacheRef.current.get(followPubkey);
 
-            // Seed initial position in a circle around the parent node
-            // so new nodes don't all spawn at (0,0)
+            // Seed initial position in a sphere/circle around the parent node
+            // so new nodes don't all spawn at (0,0,0)
             const angle = totalNew > 0
               ? (newNodeIndex * 2 * Math.PI) / totalNew
               : 0;
             const radius = 100;
             const x = parentX + radius * Math.cos(angle);
             const y = parentY + radius * Math.sin(angle);
+            // For 3D: spread z with a slight wave so nodes form a sphere, not a flat ring
+            const z = parentZ + radius * 0.3 * Math.sin(angle * 2);
             newNodeIndex++;
 
             newNodes.push({
@@ -415,6 +418,7 @@ export function useGraphData() {
               isMutual: false,
               x,
               y,
+              z,
             });
           }
         }
