@@ -316,22 +316,18 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
   );
 
   // Persist simulated positions so they survive data updates
+  // react-force-graph mutates node objects in-place with x/y — read directly from visibleData.nodes
   useEffect(() => {
     const interval = setInterval(() => {
-      if (graphRef.current) {
-        const gData = graphRef.current.graphData();
-        if (gData?.nodes) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          gData.nodes.forEach((n: any) => {
-            if (n.x !== undefined && n.y !== undefined) {
-              prevNodePositions.current.set(n.id, { x: n.x, y: n.y });
-            }
-          });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      visibleData.nodes.forEach((n: any) => {
+        if (n.x !== undefined && n.y !== undefined) {
+          prevNodePositions.current.set(n.id, { x: n.x, y: n.y });
         }
-      }
+      });
     }, 2000); // snapshot positions every 2s
     return () => clearInterval(interval);
-  }, []);
+  }, [visibleData.nodes]);
 
   // Tune d3 forces: stronger repulsion + collision avoidance
   useEffect(() => {
