@@ -466,11 +466,19 @@ export function useGraphData() {
     [expandNode, fetchProfiles, addProfiles, mergeData, setLoading, setError]
   );
 
-  // Reset refs when user changes
+  // Reset refs when user changes or graph is cleared
   useEffect(() => {
     initializedRef.current = false;
     expandingNodesRef.current.clear();
   }, [userPubkey]);
+
+  // Also reset initialized flag when graph data is emptied (manual reset)
+  useEffect(() => {
+    if (state.data.nodes.length === 0) {
+      initializedRef.current = false;
+      expandingNodesRef.current.clear();
+    }
+  }, [state.data.nodes.length]);
 
   // Build initial graph when ready
   useEffect(() => {

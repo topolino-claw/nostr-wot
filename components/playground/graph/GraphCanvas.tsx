@@ -142,6 +142,11 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
     if (filteredData.nodes.length > 1) {
       setShowStartPrompt(false);
     }
+    // When graph is reset (empty), clear pinned positions and show prompt again
+    if (filteredData.nodes.length === 0) {
+      prevNodePositions.current.clear();
+      setShowStartPrompt(true);
+    }
   }, [filteredData.nodes.length]);
 
   // Node click handler - opens sidebar AND shows context menu
