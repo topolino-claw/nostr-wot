@@ -41,6 +41,8 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const graphRef = useRef<any>(null);
+  const hasCenteredRef = useRef(false); // only center camera once on initial load
+  const hasForcesTunedRef = useRef(false); // only tune forces once per mount
   const [showStartPrompt, setShowStartPrompt] = useState(true);
   const [contextMenu, setContextMenu] = useState<{
     node: GraphNode;
@@ -131,9 +133,11 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
     if (filteredData.nodes.length > 1) {
       setShowStartPrompt(false);
     }
-    // When graph is reset (empty), clear pinned positions and show prompt again
+    // When graph is reset (empty), clear state and show prompt again
     if (filteredData.nodes.length === 0) {
       prevNodePositions.current.clear();
+      hasCenteredRef.current = false;
+      hasForcesTunedRef.current = false;
       setShowStartPrompt(true);
     }
   }, [filteredData.nodes.length]);
@@ -353,9 +357,11 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
     return () => clearInterval(interval);
   }, [visibleData.nodes]);
 
-  // Tune d3 forces: radial layout by distance + collision + link locality
+  // Tune d3 forces once after mount — re-tuning on every node count change
+  // causes the simulation to reheat and the graph to jump around.
   useEffect(() => {
-    if (graphRef.current && !useStaticLayout) {
+    if (graphRef.current && !useStaticLayout && !hasForcesTunedRef.current) {
+      hasForcesTunedRef.current = true;
       // Strong charge so nodes push each other apart
       graphRef.current.d3Force('charge')?.strength(-120);
 
@@ -386,23 +392,23 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
       graphRef.current.d3Force('x', forceX(0).strength(0.02));
       graphRef.current.d3Force('y', forceY(0).strength(0.02));
     }
-  }, [visibleData.nodes.length, useStaticLayout]);
+  }, [useStaticLayout]);
 
-  // Center camera on root node after initial load
+  // Center camera on root node ONCE after initial load only.
+  // Do NOT re-trigger on every batch insertion — that causes jarring jumps.
   useEffect(() => {
-    if (graphRef.current && visibleData.nodes.length > 0) {
+    if (graphRef.current && visibleData.nodes.length > 0 && !hasCenteredRef.current) {
+      hasCenteredRef.current = true;
       const rootNode = visibleData.nodes.find((n) => n.isRoot);
 
       setTimeout(() => {
         if (rootNode && graphRef.current) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const node = rootNode as any;
-          if (node.x !== undefined && node.y !== undefined) {
-            graphRef.current.centerAt(node.x, node.y, 1000);
-            graphRef.current.zoom(1.5, 1000);
-          }
+          graphRef.current.centerAt(node.x ?? 0, node.y ?? 0, 800);
+          graphRef.current.zoom(1.5, 800);
         }
-      }, 500);
+      }, 300);
     }
   }, [visibleData.nodes.length]);
 
@@ -444,10 +450,10 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
         linkDirectionalArrowLength={settings.showArrows && !useStaticLayout ? 2 : 0}
         linkDirectionalArrowRelPos={1}
         // Disable simulation for large graphs (positions pre-computed)
-        d3AlphaDecay={useStaticLayout ? 1 : 0.03}
-        d3VelocityDecay={useStaticLayout ? 1 : 0.3}
-        cooldownTicks={useStaticLayout ? 0 : 300}
-        warmupTicks={useStaticLayout ? 0 : 30}
+        d3AlphaDecay={useStaticLayout ? 1 : 0.02}
+        d3VelocityDecay={useStaticLayout ? 1 : 0.4}
+        cooldownTicks={useStaticLayout ? 0 : 200}
+        warmupTicks={useStaticLayout ? 0 : 0}
         enableNodeDrag={!useStaticLayout}
         enableZoomInteraction={true}
         enablePanInteraction={true}
