@@ -167,7 +167,7 @@ export default function NodeProfileModal({
             )}
 
             {/* Stats section */}
-            <ProfileStats node={node} onExpand={onExpand} />
+            <ProfileStats node={node} />
 
             {/* Notes section */}
             <ProfileNotes
