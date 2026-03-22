@@ -526,11 +526,23 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
       )}
 
       {/* Context menu */}
+      {/* Expanding indicator */}
+      {state.isLoading && state.data.nodes.length > 0 && (
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-gray-800/90 backdrop-blur-sm border border-primary/40 rounded-full px-4 py-1.5 text-xs text-primary shadow-lg">
+          <svg className="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          </svg>
+          Expanding...
+        </div>
+      )}
+
       {contextMenu && (
         <NodeContextMenu
           node={contextMenu.node}
           position={contextMenu.position}
           isExpanded={state.expandedNodes.has(contextMenu.node.id)}
+          isExpanding={state.isLoading}
           onExpand={handleExpandFromMenu}
           onViewProfile={handleViewProfileFromMenu}
           onClose={handleCloseContextMenu}
