@@ -54,6 +54,9 @@ export function useGraphData() {
   const profileCacheRef = useRef<Map<string, NodeProfile>>(new Map());
   const expandingNodesRef = useRef<Set<string>>(new Set());
   const initializedRef = useRef(false);
+  // Full list of root's follows (unpaged) — used to enforce correct hop distances.
+  // A pubkey in this set is ALWAYS hop-1, regardless of where it was discovered.
+  const rootFollowsRef = useRef<Set<string>>(new Set());
   const wotRef = useRef(wot);
   wotRef.current = wot;
 
@@ -290,6 +293,12 @@ export function useGraphData() {
           return;
         }
 
+        // If expanding the root node, store ALL its follows for hop-distance enforcement
+        if (parentDistance === 0) {
+          rootFollowsRef.current = new Set(follows);
+          console.log("[expandNodeFollows] Stored root follows:", follows.length);
+        }
+
         const latestState = stateRef.current;
         const existingIds = new Set(latestState.data.nodes.map((n) => n.id));
         const newPubkeys = follows.filter((pk: string) => !existingIds.has(pk));
@@ -376,10 +385,22 @@ export function useGraphData() {
 
         for (const followPubkey of follows) {
           const extData = wotData.get(followPubkey);
-          const distance = extData?.distance ?? parentDistance + 1;
           const pathCount = extData?.paths ?? 1;
-          // Use SDK-provided score directly (defaults to 0 if not available)
           const trustScore = extData?.score ?? 0;
+
+          // Enforce correct hop distance:
+          // If the root directly follows this person, they are ALWAYS hop-1,
+          // regardless of where they were discovered during expansion.
+          const isRootFollow = rootFollowsRef.current.has(followPubkey);
+          const correctDistance = isRootFollow ? 1 : (extData?.distance ?? parentDistance + 1);
+
+          // Skip nodes that the root follows but are being discovered via another expansion —
+          // they should only appear when the root is expanded (or already visible as hop-1).
+          // This prevents a root follow from appearing as hop-2 under a different node.
+          if (isRootFollow && parentDistance > 0) {
+            // Don't render this node here — it belongs to hop-1 layer
+            continue;
+          }
 
           // Only add links to NEW nodes — skip edges to already-existing nodes
           // to avoid cross-cluster "ray" lines flying across the screen
@@ -414,7 +435,7 @@ export function useGraphData() {
                 cachedProfile?.name ||
                 formatPubkey(followPubkey),
               picture: cachedProfile?.picture,
-              distance,
+              distance: correctDistance,
               pathCount,
               trustScore,
               isRoot: false,
@@ -481,6 +502,7 @@ export function useGraphData() {
     if (state.data.nodes.length === 0) {
       initializedRef.current = false;
       expandingNodesRef.current.clear();
+      rootFollowsRef.current.clear();
     }
   }, [state.data.nodes.length]);
 
