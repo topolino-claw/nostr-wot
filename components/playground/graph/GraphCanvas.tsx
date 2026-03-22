@@ -369,12 +369,12 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
       graphRef.current.d3Force('collision', forceCollide(10));
 
       // Radial force: each hop snaps to its own orbit ring around center
-      // hop0=0px, hop1=180px, hop2=360px, hop3=540px
+      // hop0=0px, hop1=80px, hop2=160px, hop3=240px — keep layers close
       graphRef.current.d3Force('radial', forceRadial(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (node: any) => (node as GraphNode).distance * 180,
+        (node: any) => (node as GraphNode).distance * 80,
         0, 0
-      )?.strength(0.15));
+      )?.strength(0.3));
 
       // Link force: keep parent-child edges short
       graphRef.current.d3Force('link')
