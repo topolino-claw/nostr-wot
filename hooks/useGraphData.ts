@@ -452,7 +452,7 @@ export function useGraphData() {
         // Cap at 150 nodes per expansion for performance, but use a STRATIFIED
         // sample so the visual represents the real WoT distribution — not just
         // the top green nodes. We split into 3 trust bands and sample evenly.
-        const MAX_NEW_NODES_PER_EXPANSION = 150;
+        const MAX_NEW_NODES_PER_EXPANSION = 250;
         let cappedNodes = newNodes;
         if (newNodes.length > MAX_NEW_NODES_PER_EXPANSION) {
           const sorted = [...newNodes].sort((a, b) => b.trustScore - a.trustScore);
