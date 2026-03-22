@@ -70,8 +70,9 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
       })
       .slice(0, MAX_VISIBLE_LINKS);
 
-    // Restore previously simulated positions so nodes that have already
-    // settled don't jump when the graph data updates with new nodes.
+    // Restore previously simulated positions and PIN settled nodes with fx/fy
+    // so the physics engine doesn't move them when new nodes are added.
+    // New nodes (no saved position) remain free to be placed by the simulation.
     nodes.forEach((node) => {
       const prev = prevNodePositions.current.get(node.id);
       if (prev) {
@@ -79,6 +80,17 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
         (node as any).x = prev.x;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (node as any).y = prev.y;
+        // Pin the node so it doesn't drift on subsequent expansions
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (node as any).fx = prev.x;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (node as any).fy = prev.y;
+      } else {
+        // New node — unpin so physics can place it
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (node as any).fx = undefined;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (node as any).fy = undefined;
       }
     });
 
@@ -334,8 +346,7 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
     [visibleData.nodes]
   );
 
-  // Persist simulated positions so they survive data updates
-  // react-force-graph mutates node objects in-place with x/y — read directly from visibleData.nodes
+  // Persist simulated positions every second so settled nodes get pinned on next update
   useEffect(() => {
     const interval = setInterval(() => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -344,7 +355,7 @@ export default function GraphCanvas({ width, height }: GraphCanvasProps) {
           prevNodePositions.current.set(n.id, { x: n.x, y: n.y });
         }
       });
-    }, 2000); // snapshot positions every 2s
+    }, 1000); // snapshot every 1s (faster = nodes get pinned sooner)
     return () => clearInterval(interval);
   }, [visibleData.nodes]);
 
