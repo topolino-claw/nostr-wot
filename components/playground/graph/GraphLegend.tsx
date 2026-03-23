@@ -8,9 +8,14 @@ import {
   TRUST_THRESHOLDS,
 } from "@/lib/graph/colors";
 
-export default function GraphLegend() {
+interface GraphLegendProps {
+  maxHeight?: number;
+}
+
+export default function GraphLegend({ maxHeight }: GraphLegendProps) {
   const { state } = useGraph();
   const { settings } = state;
+  const heightStyle = maxHeight ? { maxHeight: `${maxHeight}px` } : {};
 
   // Generate distance-based colors using the extension formula
   const getDistanceColor = (distance: number) => {
@@ -20,7 +25,7 @@ export default function GraphLegend() {
 
   if (settings.colorMode === "distance") {
     return (
-      <div className="absolute top-4 left-4 bg-gray-800/90 backdrop-blur rounded-lg border border-gray-700 p-3 z-10 overflow-y-auto" style={{maxHeight: 'calc(100% - 56px)'}}>
+      <div className="absolute top-4 left-4 bg-gray-800/90 backdrop-blur rounded-lg border border-gray-700 p-3 z-10 overflow-y-auto" style={heightStyle}>
         <p className="text-xs font-medium text-gray-400 mb-2">Distance</p>
         <div className="flex flex-col gap-1.5">
           <LegendItem color="#6366f1" label="You (root)" />
@@ -46,7 +51,7 @@ export default function GraphLegend() {
   }
 
   return (
-    <div className="absolute top-4 left-4 bg-gray-800/90 backdrop-blur rounded-lg border border-gray-700 p-3 z-10 overflow-y-auto" style={{maxHeight: 'calc(100% - 56px)'}}>
+    <div className="absolute top-4 left-4 bg-gray-800/90 backdrop-blur rounded-lg border border-gray-700 p-3 z-10 overflow-y-auto" style={heightStyle}>
       <p className="text-xs font-medium text-gray-400 mb-2">Trust Score</p>
 
       {/* Trust gradient bar */}
